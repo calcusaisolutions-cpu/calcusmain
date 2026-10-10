@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" class="preloading">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <script>
+    // Apply the saved theme before first paint so there is no flash. "system" (the default) follows the OS.
+    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;
+    if(localStorage.getItem('lang')==='si'){document.documentElement.lang='si';var l=document.createElement('link');l.id='font-sinhala';l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap';document.head.appendChild(l);}}catch(e){}
+    var d=document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
+    document.querySelector('meta[name="theme-color"]').content=d?'#191919':'#ffffff';})();
+    </script>
+    <meta name="description"
+        content="CalcusAi — AI solutions, business automation, and interactive websites across Sri Lanka.">
+    <title>CalcusAi — AI solutions across Sri Lanka</title>
+    <link rel="preload" as="image" href="/logo.webp" type="image/webp" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Load the font without blocking first paint; text renders in the fallback until Inter arrives. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <link rel="icon" type="image/png" href="/logo-small.png">
+    <style>
+    /* Loading screen: inlined so it paints before any other file arrives. */
+    #preloader{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:#fff;color:#111;transition:opacity .5s ease,visibility .5s}
+    :root[data-theme="dark"] #preloader{background:#191919;color:#ededeb}
+    @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) #preloader{background:#191919;color:#ededeb}}
+    .loaded #preloader{opacity:0;visibility:hidden;pointer-events:none}
+    .preloader-inner{display:flex;flex-direction:column;align-items:center;gap:22px}
+    .preloader-mark{font:900 clamp(34px,7vw,56px)/1 "Arial Black","Arial Bold",Gadget,Arial,sans-serif;letter-spacing:-.005em;animation:preloader-in .6s cubic-bezier(.2,.7,.2,1) both}
+    .preloader-mark span{color:#5cb944}
+    .preloader-dots{display:flex;gap:10px}
+    .preloader-dots i{width:12px;height:12px;border-radius:50%;animation:preloader-bounce 1s ease-in-out infinite}
+    .preloader-dots i:nth-child(1){background:#5cb944}
+    .preloader-dots i:nth-child(2){background:#0289d3;animation-delay:.15s}
+    .preloader-dots i:nth-child(3){background:#f29a04;animation-delay:.3s}
+    @keyframes preloader-in{from{opacity:0;transform:translateY(14px)}}
+    @keyframes preloader-bounce{0%,80%,100%{transform:translateY(0);opacity:.55}40%{transform:translateY(-12px);opacity:1}}
+    @media(prefers-reduced-motion:reduce){.preloader-mark,.preloader-dots i{animation:none}}
+    </style>
+</head>
+
+<body>
+    <div id="preloader" aria-hidden="true"><div class="preloader-inner"><div class="preloader-mark">Calcus<span>Ai</span></div><div class="preloader-dots"><i></i><i></i><i></i></div></div></div>
+    <div id="app"></div>
+    <script>
+    // Hide the loading screen once the page has loaded (shown at least briefly so it never flickers, at most 3s).
+    (function(){var root=document.documentElement,start=Date.now(),finished=false;
+    function done(){if(finished)return;finished=true;setTimeout(function(){root.classList.remove('preloading');root.classList.add('loaded');
+    setTimeout(function(){var el=document.getElementById('preloader');if(el)el.remove();},700);},Math.max(0,450-(Date.now()-start)));}
+    if(document.readyState==='complete')done();else window.addEventListener('load',done,{once:true});setTimeout(done,3000);})();
+    </script>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
