@@ -2,7 +2,8 @@ FROM node:24-alpine AS frontend
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-COPY index.html vite.config.js ./
+COPY index.html vite.config.js servicelist.md ./
+COPY scripts ./scripts
 COPY src ./src
 COPY public ./public
 RUN npm run build

@@ -49,8 +49,9 @@ func enquiries(w http.ResponseWriter, r *http.Request) {
 	e.Email = strings.TrimSpace(e.Email)
 	e.Message = strings.TrimSpace(e.Message)
 	address, err := mail.ParseAddress(e.Email)
-	allowed := map[string]bool{"AI solutions": true, "Business automation": true, "Interactive website": true, "3D experience": true, "Motion design": true, "Digital product": true}
-	if e.Name == "" || len(e.Name) > 100 || err != nil || address.Address != e.Email || len(e.Email) > 254 || len(e.Message) < 10 || len(e.Message) > 5000 || !allowed[e.Service] {
+	// The form offers every service and package from servicelist.md, so accept any short, printable service name.
+	e.Service = strings.TrimSpace(e.Service)
+	if e.Name == "" || len(e.Name) > 100 || err != nil || address.Address != e.Email || len(e.Email) > 254 || len(e.Message) < 10 || len(e.Message) > 5000 || !validService(e.Service) {
 		http.Error(w, `{"error":"invalid enquiry fields"}`, 400)
 		return
 	}
@@ -82,6 +83,44 @@ func enquiries(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w, `{"saved":true}`)
 }
+func validService(service string) bool {
+	if service == "" || len(service) > 120 {
+		return false
+	}
+	for _, r := range service {
+		if r < 0x20 || r == 0x7f {
+			return false
+		}
+	}
+	return true
+}
+
+// staticFiles serves the pre-rendered site from dist, answering unknown paths with dist/404.html
+// (and a real 404 status) instead of a directory listing or Go's plain-text error.
+func staticFiles(dir string) http.Handler {
+	files := http.FileServer(http.Dir(dir))
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := filepath.Join(dir, filepath.FromSlash(filepath.Clean("/"+r.URL.Path)))
+		info, err := os.Stat(path)
+		if err == nil && info.IsDir() {
+			_, err = os.Stat(filepath.Join(path, "index.html"))
+		}
+		if err != nil {
+			page, readErr := os.ReadFile(filepath.Join(dir, "404.html"))
+			w.Header().Set("Cache-Control", "no-cache")
+			if readErr != nil {
+				http.NotFound(w, r)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.WriteHeader(http.StatusNotFound)
+			w.Write(page)
+			return
+		}
+		files.ServeHTTP(w, r)
+	})
+}
+
 func handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/enquiries", enquiries)
@@ -90,7 +129,7 @@ func handler() http.Handler {
 		io.WriteString(w, `{"status":"ok"}`)
 	})
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) { http.NotFound(w, r) })
-	mux.Handle("/", http.FileServer(http.Dir("dist")))
+	mux.Handle("/", staticFiles("dist"))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -101,8 +140,11 @@ func handler() http.Handler {
 			w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 		case strings.HasPrefix(path, "/api/"):
 			w.Header().Set("Cache-Control", "no-store")
-		case path == "/" || strings.HasSuffix(path, ".html"):
+		case strings.HasSuffix(path, "/") || strings.HasSuffix(path, ".html"):
+			// Pages are re-checked on every visit so a new deploy shows up immediately.
 			w.Header().Set("Cache-Control", "no-cache")
+		case path == "/sitemap.xml" || path == "/robots.txt" || strings.HasPrefix(path, "/llms"):
+			w.Header().Set("Cache-Control", "public, max-age=3600")
 		default:
 			w.Header().Set("Cache-Control", "public, max-age=86400")
 		}
@@ -119,11 +161,11 @@ func handler() http.Handler {
 
 // compressible reports whether a static path is text that benefits from gzip (images are already compressed).
 func compressible(path string) bool {
-	if path == "/" {
+	if strings.HasSuffix(path, "/") {
 		return true
 	}
 	switch strings.ToLower(filepath.Ext(path)) {
-	case ".html", ".css", ".js", ".svg", ".json":
+	case ".html", ".css", ".js", ".svg", ".json", ".xml", ".txt":
 		return true
 	}
 	return false

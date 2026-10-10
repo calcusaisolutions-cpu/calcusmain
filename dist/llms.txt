@@ -1,0 +1,96 @@
+# Calcus AI
+
+> Calcus AI (also written CalcusAi) is a Sri Lankan technology company (registered as Calcusai (Pvt) Ltd) with its head office in Maharagama. It builds AI-powered and traditional (non-AI) software for businesses and organisations across all of Sri Lanka: AI chatbots and voice assistants, business automation, websites, mobile apps, POS and business management systems, e-commerce, payment integrations, learning management systems, cloud hosting, cybersecurity and IoT — in Sinhala, Tamil and English.
+
+- Website: https://calcus.ai/
+- All services: https://calcus.ai/services/
+- Packages: https://calcus.ai/packages/
+- Contact / project enquiries: https://calcus.ai/#contact
+- Company: Calcusai (Pvt) Ltd
+- Head office: Calcus HQ, 21/2 Rajamahavihara Road, Maharagama, Sri Lanka
+- Phone: +94 70 184 0527
+- Serves: all 9 provinces and 25 districts of Sri Lanka, remotely and with on-site visits where agreed
+- Languages: Sinhala, Tamil and English
+- Builds both AI-powered and traditional non-AI systems, and only adds AI where it adds value
+- Vision: To make modern technology and artificial intelligence accessible, affordable, and useful across Sri Lanka.
+- Works with leading AI and cloud platforms: OpenAI, Anthropic Claude, Google Gemini, xAI Grok, Meta Llama, DeepSeek, Hugging Face, ElevenLabs and AWS
+- Flagship project: ApilageAI, Sri Lanka's first AI + human learning community, where learners ask questions, share answers, run polls and chat with AI — built and powered by Calcus AI
+
+## Artificial Intelligence & Automation
+
+- [AI Consulting & Digital Transformation](https://calcus.ai/services/ai-consulting-digital-transformation/): Find where AI genuinely helps your business, then plan, prototype and roll it out with a clear roadmap.
+- [Business Automation & AI Workflows](https://calcus.ai/services/business-automation-ai-workflows/): Automate invoices, follow-ups, bookings, reports and approvals so your team spends time on real work.
+- [AI Chatbots & Voice Assistants](https://calcus.ai/services/ai-chatbots-voice-assistants/): Sinhala, Tamil and English chatbots and voice assistants for your website, WhatsApp and phone line.
+- [Custom AI Models, Training & Fine-Tuning](https://calcus.ai/services/custom-ai-models-training/): Custom and fine-tuned AI models, RAG knowledge systems and computer vision trained on your own data.
+- [AI Agents & Multi-Agent Management Platform](https://calcus.ai/services/ai-agents-platform/): Specialist AI agents working together, managed from one dashboard with access controls and spending limits.
+- [AI API Development & Integration](https://calcus.ai/services/ai-api-development-integration/): Connect leading AI providers to your systems with secure, monitored and cost-controlled APIs.
+- [AI Document Processing & Knowledge Management](https://calcus.ai/services/ai-document-processing/): Turn PDFs, invoices and forms into searchable data, summaries and company knowledge assistants.
+- [AI Decision Support & Data Analytics](https://calcus.ai/services/ai-decision-support-data-analytics/): Dashboards, forecasts and analysis that help you decide on sales, stock, cash flow and risk.
+- [Generative AI & Creative Solutions](https://calcus.ai/services/generative-ai-creative-solutions/): AI-assisted design, marketing images, video, voiceovers and multilingual content for your brand.
+
+## Software, Websites & Application Development
+
+- [Website Design & Development](https://calcus.ai/services/website-design-development/): Fast, mobile-friendly websites in Sinhala, Tamil and English — for shops, schools, hotels, clinics and more.
+- [Custom Software Development](https://calcus.ai/services/custom-software-development/): Web, desktop and SaaS software built around how your business actually works.
+- [Mobile Application Development](https://calcus.ai/services/mobile-app-development/): Android, iOS and cross-platform apps with payments, notifications and app store publishing support.
+- [E-Commerce & Online Selling Systems](https://calcus.ai/services/ecommerce-online-selling/): Online shops with LKR payments, WhatsApp orders, cash-on-delivery tracking and courier integrations.
+- [Business Management Systems](https://calcus.ai/services/business-management-systems/): POS, CRM, ERP, inventory, billing and payroll systems for shops, restaurants, salons and growing companies.
+- [Payment, Billing & Subscription Solutions](https://calcus.ai/services/payment-billing-subscriptions/): LKR and international payment gateways, LANKAQR-compatible options, subscriptions and automated reminders.
+
+## Cloud, Infrastructure & Technical Services
+
+- [Cloud, VPS & Hosting Services](https://calcus.ai/services/cloud-vps-hosting/): Hosting, VPS and cloud servers set up, secured, backed up and monitored for you.
+- [Domains, Email & Digital Setup](https://calcus.ai/services/domains-email-digital-setup/): .lk and .com domains, business email, Google Workspace or Microsoft 365 and search indexing — set up properly.
+- [Cybersecurity, Privacy & Data Protection](https://calcus.ai/services/cybersecurity-data-protection/): Security reviews, access control, backups and Personal Data Protection Act readiness for your systems.
+- [Systems Integration & Data Engineering](https://calcus.ai/services/systems-integration-data-engineering/): Connect your apps, migrate data and turn spreadsheets into reliable software and dashboards.
+
+## Education & Learning Technology
+
+- [Learning Management Systems (LMS)](https://calcus.ai/services/learning-management-systems/): LMS platforms for schools, tuition classes, universities and staff training — exams, video lessons and certificates.
+- [AI Education & Syllabus-Based Learning](https://calcus.ai/services/ai-education-syllabus-learning/): Syllabus-aligned AI tutors for O/L and A/L students, practice questions and study plans reviewed by teachers.
+
+## AI + IoT & Smart Systems
+
+- [AI-Powered IoT & Smart Automation](https://calcus.ai/services/ai-iot-smart-automation/): Smart sensors and AI for homes, offices, farms and factories — monitoring, alerts and remote control.
+- [AI Architecture, Home Planning & Property Technology](https://calcus.ai/services/ai-architecture-property-technology/): AI home-layout ideas, 3D visualisation, property platforms and construction tracking dashboards.
+
+## Industry-Specific Digital Solutions
+
+- [Healthcare, Clinics & Wellness](https://calcus.ai/services/healthcare-clinics-wellness/): Clinic appointments, queues, patient records, pharmacy stock and reminders — with privacy built in.
+- [Tourism, Hotels & Hospitality](https://calcus.ai/services/tourism-hotels-hospitality/): Direct booking websites, reservation systems, tour itineraries and multilingual guest assistants.
+- [Agriculture, Fisheries & Rural Technology](https://calcus.ai/services/agriculture-fisheries-rural-technology/): Farm monitoring, smart irrigation, market prices and Sinhala and Tamil voice help for farmers.
+- [Logistics, Delivery & Transportation](https://calcus.ai/services/logistics-delivery-transportation/): Parcel tracking, delivery and fleet management, route planning and customer delivery updates.
+- [Manufacturing, Wholesale & Export Businesses](https://calcus.ai/services/manufacturing-wholesale-export/): Production planning, factory inventory, quality control, export paperwork and B2B ordering portals.
+- [Government, NGOs & Community Organizations](https://calcus.ai/services/government-ngo-community/): Citizen portals, complaint handling, beneficiary tracking and multilingual SMS and voice alerts.
+- [Professional Services, Offices & HR](https://calcus.ai/services/professional-services-hr/): HR, payroll, recruitment and document systems for offices, accounting firms and law practices.
+
+## Marketing & Customer Growth
+
+- [Digital Marketing Technology](https://calcus.ai/services/digital-marketing-seo/): SEO and local search, landing pages, WhatsApp and email marketing automation and campaign dashboards.
+- [Retail, Restaurants & Everyday Business Solutions](https://calcus.ai/services/retail-restaurant-business-solutions/): Billing, ordering, booking and membership systems for groceries, cafés, salons, gyms and tuition classes.
+
+## Language, Accessibility & Localization
+
+- [Sinhala, Tamil & English Digital Solutions](https://calcus.ai/services/sinhala-tamil-english-solutions/): Trilingual websites, apps, chatbots and voice tools built for Sinhala, Tamil and English speakers.
+
+## Training, Managed Services & Continuous Support
+
+- [AI Training & Digital Skills Development](https://calcus.ai/services/ai-training-digital-skills/): Practical AI workshops for teams, teachers and SMEs — from prompt writing to automation skills.
+- [Technical Support & Managed Services](https://calcus.ai/services/technical-support-managed-services/): Ongoing maintenance, monitoring, updates and SLA-based support for your websites, apps and AI systems.
+
+## Packages
+
+- [Calcus Start — Digital Business Starter](https://calcus.ai/packages/#calcus-start): For small businesses, startups, and professionals. Business website, Domain and hosting assistance, Mobile-responsive design, Business email setup, Basic digital integrations, Optional AI chatbot, Maintenance package.
+- [Calcus Commerce — Sell Online](https://calcus.ai/packages/#calcus-commerce): For shops, retailers, and online sellers. E-commerce website, Product and inventory management, LKR payment integration, WhatsApp order workflow, Delivery and cash-on-delivery tracking, AI customer assistant, Sales dashboard.
+- [Calcus Assist — AI Customer Support](https://calcus.ai/packages/#calcus-assist): For any business receiving customer inquiries. Sinhala, Tamil, and English chat assistant, Website integration, Supported WhatsApp and messaging integrations, Business knowledge-base setup, Lead capture and appointment assistance, Human-agent handover, Conversation analytics.
+- [Calcus Business OS — Manage Your Operations](https://calcus.ai/packages/#calcus-business-os): For growing companies and multi-branch businesses. Billing and invoicing, CRM and customer management, Inventory and stock monitoring, Employee management, Automated reports, Workflow automation, Optional AI analysis.
+- [Calcus Edu — Smart Education](https://calcus.ai/packages/#calcus-edu): For schools, tuition centres, and training institutes. LMS platform, Student and teacher portals, Online assessments, Learning analytics, Subject-specific AI tutors, Sinhala, Tamil, and English support, Course management.
+- [Calcus Cloud — Hosting & Infrastructure](https://calcus.ai/packages/#calcus-cloud): For businesses and developers. Website and application hosting, VPS setup, Domain and DNS management, Cloud deployment, Backup and monitoring, Security configuration, Technical maintenance.
+- [Calcus Agents — AI Developer & Agent Platform](https://calcus.ai/packages/#calcus-agents): For developers, technology companies, and enterprises. Centralized AI agent dashboard, Multiple-agent orchestration, AI model provider integrations, API gateway, Usage and cost controls, Permissions and audit logs, Managed or self-hosted deployment.
+- [Calcus Enterprise — Custom AI Transformation](https://calcus.ai/packages/#calcus-enterprise): For corporate organizations, institutions, and NGOs. AI strategy and requirements assessment, Custom software and AI development, Integration with existing systems, Automation and analytics, Secure deployment, Employee training, Dedicated support and maintenance.
+- [Calcus Smart — IoT & Intelligent Monitoring](https://calcus.ai/packages/#calcus-smart): For farms, homes, offices, and industries. IoT sensor integration, Device control dashboard, Remote monitoring, Alert and notification systems, AI-assisted analytics, Mobile application integration, Ongoing device and software support.
+
+## Optional
+
+- [Full service catalogue with every capability](https://calcus.ai/llms-full.txt)
+- [Sitemap](https://calcus.ai/sitemap.xml)
