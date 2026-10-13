@@ -5,6 +5,7 @@ import Footer from './Footer.svelte';
 import Home from './pages/Home.svelte';
 import ServicesIndex from './pages/ServicesIndex.svelte';
 import ServicePage from './pages/ServicePage.svelte';
+import ForTeachers from './pages/ForTeachers.svelte';
 import Packages from './pages/Packages.svelte';
 import NotFound from './pages/NotFound.svelte';
 import CallButton from './CallButton.svelte';
@@ -18,6 +19,7 @@ $: route=resolve(url);
  {#if route.page==='home'}<Home/>
  {:else if route.page==='services'}<ServicesIndex/>
  {:else if route.page==='service'}<ServicePage service={route.service}/>
+ {:else if route.page==='teachers'}<ForTeachers/>
  {:else if route.page==='packages'}<Packages/>
  {:else}<NotFound/>{/if}
 </main>

@@ -21,7 +21,7 @@ for (const route of routes) write(join(dist, route, 'index.html'), page(route));
 write(join(dist, '404.html'), page('/404/'));
 
 const today = new Date().toISOString().slice(0, 10);
-const priority = route => route === '/' ? '1.0' : route === '/services/' ? '0.9' : route === '/packages/' ? '0.8' : '0.7';
+const priority = route => route === '/' ? '1.0' : route === '/services/' ? '0.9' : route === '/packages/' || route === '/packages/for-teachers/' ? '0.8' : '0.7';
 write(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${routes.map(route => `  <url><loc>${SITE_URL}${route}</loc><lastmod>${today}</lastmod><priority>${priority(route)}</priority></url>`).join('\n')}
@@ -44,6 +44,7 @@ const intro = `> Calcus AI (also written CalcusAi) is a Sri Lankan technology co
 const facts = `- Website: ${SITE_URL}/
 - All services: ${SITE_URL}/services/
 - Packages: ${SITE_URL}/packages/
+- For teachers and tuition classes (teacher website, class management, Z-score grade analyser, subject AI in Sinhala/Tamil/English, from LKR 80,000): ${SITE_URL}/packages/for-teachers/
 - Contact / project enquiries: ${SITE_URL}/#contact
 - Company: ${COMPANY.legalName}
 - Head office: ${COMPANY.office}, ${COMPANY_ADDRESS}
@@ -125,5 +126,11 @@ ${delivery.map((item, index) => `${index + 1}. ${item.title}: ${item.text}`).joi
 ${why.map(item => `- ${item.title}: ${item.text}`).join('\n')}
 `);
 
+// The catalogue the "I don't know how?" advisor (server/advisor.go) sends to Claude and checks its suggestions against.
+write(join(dist, 'advisor-catalog.json'), JSON.stringify({
+ services: services.map(service => ({ slug: service.slug, title: service.title, siTitle: service.siTitle, summary: service.summary, siSummary: service.siSummary, url: serviceUrl(service), items: service.items })),
+ packages: packages.map(pack => ({ slug: pack.slug, name: pack.name, tagline: pack.tagline, siTagline: pack.si, audience: pack.audience, url: `/packages/#${pack.slug}`, items: pack.items, services: pack.services.map(service => service.slug) }))
+}));
+
 rmSync(join(root, 'dist-server'), { recursive: true, force: true });
-console.log(`prerendered ${routes.length} pages + 404, sitemap.xml, robots.txt, llms.txt, llms-full.txt`);
+console.log(`prerendered ${routes.length} pages + 404, sitemap.xml, robots.txt, llms.txt, llms-full.txt, advisor-catalog.json`);

@@ -1,6 +1,6 @@
 <script>
 import { tick, onMount } from 'svelte';
-import { ArrowUp, X, ArrowUpRight, ArrowRight, ArrowLeft, Bot, Send, Mail, Zap, Check, MessageCircle, ChartColumn, Box, LayoutGrid, Users, FlaskConical, Lightbulb } from '@lucide/svelte';
+import { ArrowUp, X, ArrowUpRight, ArrowRight, ArrowLeft, ChevronRight, Bot, Send, Mail, Zap, Check, MessageCircle, ChartColumn, Box, LayoutGrid, Users, FlaskConical, Lightbulb, Sparkles } from '@lucide/svelte';
 import Mascot from '../Mascot.svelte';
 import MeshBackground from '../MeshBackground.svelte';
 import FloatingBots from '../FloatingBots.svelte';
@@ -12,11 +12,40 @@ import { t, lang } from '../i18n.js';
 import { categories, packages, serviceBySlug, serviceUrl, COMPANY, COMPANY_MAP, APILAGE } from '../data/services.js';
 let name='',email='',service='Not sure yet',message='',statusKey='',sending=false;
 $: status=statusKey?$t(statusKey):'';
-// The service cards scroll sideways; the arrow buttons move one card at a time.
-let rail;
+// The service cards scroll sideways in an endless loop: the row is drawn three times and,
+// once scrolling settles inside a copy, it jumps by one set width to the identical real card.
+let rail,settle;
+function setWidth(){
+ const cards=rail?.querySelectorAll('.feature-card');
+ return cards?.length>=8?cards[cards.length/3].offsetLeft-cards[0].offsetLeft:0;
+}
+function recentre(){
+ const width=setWidth();if(!width)return;
+ if(rail.scrollLeft<width*.5)rail.scrollLeft+=width;
+ else if(rail.scrollLeft>=width*1.5)rail.scrollLeft-=width;
+}
+function onRailScroll(){clearTimeout(settle);settle=setTimeout(recentre,140);}
 function slide(direction){
  const card=rail?.querySelector('.feature-card');if(!card)return;
  rail.scrollBy({left:direction*(card.getBoundingClientRect().width+20),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+onMount(()=>{
+ rail.scrollLeft=setWidth();
+ const resize=new ResizeObserver(recentre);resize.observe(rail);
+ return()=>{resize.disconnect();clearTimeout(settle);};
+});
+// Svelte action: the ApilageAI laptop leans toward the mouse, as --tx/--ty from -0.5 to 0.5 across the card.
+function tilt(node){
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const move=(event)=>{
+  if(event.pointerType!=='mouse')return;
+  const box=node.getBoundingClientRect();
+  node.style.setProperty('--tx',((event.clientX-box.left)/box.width-.5).toFixed(3));
+  node.style.setProperty('--ty',((event.clientY-box.top)/box.height-.5).toFixed(3));
+ };
+ const leave=()=>{node.style.removeProperty('--tx');node.style.removeProperty('--ty');};
+ node.addEventListener('pointermove',move);node.addEventListener('pointerleave',leave);
+ return{destroy(){node.removeEventListener('pointermove',move);node.removeEventListener('pointerleave',leave);}};
 }
 // Service pages link here as /?service=<slug>#contact so the form arrives with that service selected.
 onMount(()=>{
@@ -24,12 +53,14 @@ onMount(()=>{
  const match=wanted&&(serviceBySlug[wanted]?.title||packages.find(pack=>pack.slug===wanted)?.name);
  if(match)service=match;
 });
-// "I don't know how?": the mascot asks what the visitor does, watches them type, then carries the answer to the contact form.
-let asking=false,idea='',cloudKey='',look=null,ideaInput,handoff;
-$: cloud=cloudKey?$t(cloudKey):'';
+// "I don't know how?": the mascot asks what the visitor does and watches them type. The answer goes to /api/advise, where
+// Claude matches it against our catalogue; the mascot reads out the reply and a card shows the package, services and
+// ideas. If the advisor is off or fails, the answer is carried to the contact form as before.
+let asking=false,idea='',cloudKey='',cloudText='',look=null,ideaInput,handoff,advice=null,thinking=false,asked='',pending;
+$: cloud=cloudText||(cloudKey?$t(cloudKey):'');
 let measure;
-async function startAsking(){clearTimeout(handoff);asking=true;cloudKey='ask.prompt';await tick();ideaInput?.focus({preventScroll:true});}
-async function stopAsking(){clearTimeout(handoff);asking=false;cloudKey='';look=null;await tick();document.querySelector('.hero-actions .button-soft')?.focus({preventScroll:true});}
+async function startAsking(){clearTimeout(handoff);asking=true;advice=null;cloudText='';cloudKey='ask.prompt';await tick();ideaInput?.focus({preventScroll:true});}
+async function stopAsking(){clearTimeout(handoff);pending?.abort();asking=false;thinking=false;advice=null;cloudText='';cloudKey='';look=null;await tick();document.querySelector('.hero-actions .button-soft')?.focus({preventScroll:true});}
 function trackCaret(){
  if(!ideaInput)return;
  const style=getComputedStyle(ideaInput),rect=ideaInput.getBoundingClientRect();
@@ -39,12 +70,38 @@ function trackCaret(){
  const x=rect.left+parseFloat(style.paddingLeft)+measure.measureText(before).width-ideaInput.scrollLeft;
  look={x:Math.min(x,rect.right-parseFloat(style.paddingRight)),y:rect.top+rect.height/2};
 }
-function sendIdea(){
+async function sendIdea(){
  const text=idea.trim();if(!text){ideaInput?.focus();return;}
- look=null;cloudKey='ask.reply';
- message=message.trim()?`${message.trim()}\n\n${text}`:text;
- handoff=setTimeout(()=>{asking=false;cloudKey='';idea='';document.getElementById('contact')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});},2200);
+ if(thinking)return;
+ look=null;advice=null;cloudText='';cloudKey='ask.thinking';thinking=true;asked=text;
+ pending=new AbortController();
+ try{
+  const response=await fetch('/api/advise',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,lang:$lang}),signal:pending.signal});
+  if(response.status===429){cloudKey='ask.busy';return;}
+  if(!response.ok)throw new Error(`advisor ${response.status}`);
+  const data=await response.json();
+  // With suggestions, the reply leads the card (the speech cloud would sit under it); without, the mascot says it.
+  advice=data.package||data.services.length||data.ideas.length?data:null;
+  if(advice)cloudKey='';else cloudText=data.reply;
+  idea='';
+ }catch(error){
+  if(error.name!=='AbortError')handToForm(text);
+ }finally{thinking=false;}
 }
+// Fill the contact form with what they told us (and what was suggested), then close the box and scroll down to it.
+function handToForm(text,delay=2200){
+ cloudText='';cloudKey='ask.reply';
+ message=message.trim()?`${message.trim()}\n\n${text}`:text;
+ handoff=setTimeout(()=>{asking=false;cloudKey='';cloudText='';advice=null;idea='';document.getElementById('contact')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});},delay);
+}
+function talkToUs(){
+ const pack=advice?.package&&packages.find(item=>item.slug===advice.package.slug);
+ const first=advice?.services?.[0]&&serviceBySlug[advice.services[0].slug];
+ if(pack)service=pack.name;else if(first)service=first.title;
+ const suggested=[advice?.package?.title,...(advice?.services??[]).map(item=>item.title)].filter(Boolean);
+ handToForm(suggested.length?`${asked}\n\n${$t('adv.prefill')} ${suggested.join(', ')}`:asked,900);
+}
+async function askAgain(){advice=null;cloudText='';cloudKey='ask.prompt';await tick();ideaInput?.focus({preventScroll:true});}
 $: ideas=[
  {icon:MessageCircle,tone:'blue',title:$t('idea.1'),href:'/services/ai-chatbots-voice-assistants/'},
  {icon:ChartColumn,tone:'orange',title:$t('idea.2'),href:'/services/business-automation-ai-workflows/'},
@@ -77,6 +134,25 @@ const spotlightItems=[
  {media:'map',image:'/sri-lanka-network.svg',href:'/services/#areas'}
 ];
 $: spotlights=spotlightItems.map((item,index)=>({...item,title:$t(`spot.${index+1}.title`),tag:$t(`spot.${index+1}.tag`),note:$t(`spot.${index+1}.note`)}));
+// AI platform logos floating in the hero's side margins, clear of the wordmark, mascot and buttons.
+// x/y place the tile's centre in % of the hero; size is in px; depth < 1 pushes a tile back (smaller, fainter).
+const floatSpots={
+ 'AWS':{x:5,y:24,size:54,depth:.85,delay:-2.5},
+ 'OpenAI':{x:7,y:39,size:76,depth:1,delay:0},
+ 'Gemini':{x:19,y:51,size:62,depth:.9,delay:-3},
+ 'Meta Llama':{x:5,y:79,size:64,depth:.95,delay:-6},
+ 'DeepSeek':{x:19,y:87,size:54,depth:.85,delay:-1.5},
+ 'xAI':{x:96,y:23,size:52,depth:.85,delay:-4},
+ 'Claude':{x:92,y:37,size:76,depth:1,delay:-2},
+ 'Hugging Face':{x:88,y:64,size:62,depth:.9,delay:-5},
+ 'ElevenLabs':{x:95,y:79,size:62,depth:.95,delay:-7}
+};
+const floatingLogos=partners.filter(partner=>floatSpots[partner.name]).map((partner,index)=>({...partner,...floatSpots[partner.name],index}));
+// A Sri Lankan touch among the logos: the flag, and an "Ayubowan" greeting pill (🙏 is the closest emoji to the gesture).
+const floatingExtras=[
+ {text:'🇱🇰',x:97,y:51,size:62,depth:1,delay:-3.5,index:9},
+ {text:'🙏',label:'ආයුබෝවන්',pill:true,x:12,y:65,size:56,depth:1,delay:-4.5,index:10}
+];
 const salesBars=[34,48,42,60,55,72,86];
 const bars=[38,52,44,63,58,72,66,88];
 async function submit(){sending=true;statusKey='';try{const response=await fetch('/api/enquiries',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,service,message})});if(!response.ok)throw new Error();statusKey='form.saved';name='';email='';message='';}catch{statusKey='form.failed';}finally{sending=false;}}
@@ -85,6 +161,10 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
 <svelte:head><link rel="preload" as="image" href="/logo.webp" type="image/webp" fetchpriority="high"></svelte:head>
 <section class="hero" id="home">
  <MeshBackground className="hero-mesh" cell={46} radius={140}/>
+ <div class="hero-logos" aria-hidden="true">
+  {#each floatingLogos as logo}<span class="float-logo" style="--x:{logo.x}%;--y:{logo.y}%;--size:{logo.size}px;--depth:{logo.depth};--delay:{logo.delay}s;--i:{logo.index};--brand:{logo.color}"><svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">{@html logo.paths}</svg></span>{/each}
+  {#each floatingExtras as extra}<span class="float-logo float-emoji" class:float-pill={extra.pill} style="--x:{extra.x}%;--y:{extra.y}%;--size:{extra.size}px;--depth:{extra.depth};--delay:{extra.delay}s;--i:{extra.index}"><span class="float-glyph">{extra.text}</span>{#if extra.label}<span lang="si">{extra.label}</span>{/if}</span>{/each}
+ </div>
  <div class="hero-art hero-composition">
   <div class="hero-canvas">
    <img class="network-map" src="/sri-lanka-network.svg" alt={$t('hero.mapAlt')} width="450" height="600">
@@ -94,11 +174,21 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
  </div>
  <div class="hero-caption"><p class="intro">{$t('hero.intro')}</p><div class="hero-cta" class:asking>
   <div class="hero-actions" inert={asking}><a class="button" href="#contact">{$t('hero.explore')}</a><button type="button" class="button button-soft" onclick={startAsking}>{$t('hero.dunno')}</button></div>
-  <form class="ask-box" inert={!asking} onsubmit={(event)=>{event.preventDefault();sendIdea();}}>
+  <form class="ask-box" class:thinking inert={!asking} onsubmit={(event)=>{event.preventDefault();sendIdea();}}>
    <input bind:this={ideaInput} bind:value={idea} maxlength="300" placeholder={$t('ask.placeholder')} aria-label={$t('ask.label')} oninput={trackCaret} onkeyup={trackCaret} onkeydown={(event)=>{if(event.key==='Escape')stopAsking();}} onclick={trackCaret} onfocus={trackCaret} onblur={()=>look=null}>
    <button class="ask-send" aria-label={$t('ask.send')}><ArrowUp size={18} aria-hidden="true"/></button>
    <button type="button" class="ask-close" aria-label={$t('ask.close')} onclick={stopAsking}><X size={16} aria-hidden="true"/></button>
   </form>
+  {#if asking&&advice}
+  <div class="advice-card" role="region" aria-label={$t('adv.title')}>
+   <p class="advice-kicker"><Sparkles size={15} aria-hidden="true"/>{$t('adv.title')}</p>
+   {#if advice.reply}<p class="advice-reply">{advice.reply}</p>{/if}
+   {#if advice.package}<a class="advice-package" href={advice.package.url}><span><small>{$t('adv.package')}</small><strong>{advice.package.title}</strong><span>{advice.package.summary}</span></span><ArrowRight size={18} aria-hidden="true"/></a>{/if}
+   {#if advice.services.length}<p class="advice-label">{$t('adv.services')}</p><ul class="advice-services">{#each advice.services as item (item.slug)}<li><a href={item.url}><strong>{item.title}</strong><span>{item.summary}</span></a></li>{/each}</ul>{/if}
+   {#if advice.ideas.length}<p class="advice-label">{$t('adv.ideas')}</p><ul class="advice-ideas">{#each advice.ideas as text}<li><Lightbulb size={15} aria-hidden="true"/>{text}</li>{/each}</ul>{/if}
+   <div class="advice-actions"><button type="button" class="button" onclick={talkToUs}>{$t('adv.talk')}</button><button type="button" class="button button-soft" onclick={askAgain}>{$t('adv.again')}</button></div>
+  </div>
+  {/if}
  </div></div>
 </section>
 <section class="partners" aria-labelledby="partners-title">
@@ -133,10 +223,10 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
 <section class="section" id="services">
  <FloatingBots bots={serviceBots}/>
  <div class="section-head" use:reveal><p class="kicker">{$t('services.kicker')}</p><h2>{$t('services.title')}</h2><p class="lede">{$t('services.lede')}</p></div>
- <div class="feature-rail-controls" aria-hidden="true"><button type="button" tabindex="-1" onclick={()=>slide(-1)}><ArrowLeft size={18}/></button><button type="button" tabindex="-1" onclick={()=>slide(1)}><ArrowRight size={18}/></button></div>
- <div class="feature-grid" bind:this={rail}>
-  <a class="feature-card" use:reveal={0} href="/services/ai-chatbots-voice-assistants/">
-   <div class="feature-copy"><p class="feature-label">{$t('svc.ai')}</p><h3>{$t('f1.title')}</h3><span class="round-arrow"><ArrowRight size={20} aria-hidden="true"/></span></div>
+ <div class="feature-rail-controls"><a class="rail-link" href="/services/">{$t('services.every')} <ChevronRight size={18} aria-hidden="true"/></a><span class="rail-arrows" aria-hidden="true"><button type="button" tabindex="-1" onclick={()=>slide(-1)}><ArrowLeft size={18}/></button><button type="button" tabindex="-1" onclick={()=>slide(1)}><ArrowRight size={18}/></button></span></div>
+ {#snippet serviceCards(clone)}
+  <a class="feature-card dark" aria-hidden={clone?'true':undefined} inert={clone} use:reveal={0} href="/services/ai-chatbots-voice-assistants/">
+   <div class="feature-copy"><p class="feature-label">{$t('svc.ai')}</p><h3>{$t('f1.title')}</h3><span class="learn-more">{$t('f.learn')} <ChevronRight size={18} aria-hidden="true"/></span></div>
    <div class="mock" aria-hidden="true">
     <div class="mock-bar"><Bot size={16}/><strong>{$t('f1.bar')}</strong><span class="mock-pill">{$t('f1.online')}</span></div>
     <div class="bubble user">{$t('f1.user')}</div>
@@ -144,8 +234,8 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
     <div class="mock-input">{$t('f1.ask')}<span class="send"><Send size={14}/></span></div>
    </div>
   </a>
-  <a class="feature-card" use:reveal={90} href="/services/business-automation-ai-workflows/">
-   <div class="feature-copy"><p class="feature-label">{$t('svc.auto')}</p><h3>{$t('f2.title')}</h3><span class="round-arrow"><ArrowRight size={20} aria-hidden="true"/></span></div>
+  <a class="feature-card" aria-hidden={clone?'true':undefined} inert={clone} use:reveal={90} href="/services/business-automation-ai-workflows/">
+   <div class="feature-copy"><p class="feature-label">{$t('svc.auto')}</p><h3>{$t('f2.title')}</h3><span class="learn-more">{$t('f.learn')} <ChevronRight size={18} aria-hidden="true"/></span></div>
    <div class="mock" aria-hidden="true">
     <div class="mock-bar"><Zap size={16}/><strong>{$t('f2.bar')}</strong><span class="mock-pill blue">{$t('f2.running')}</span></div>
     <div class="flow-step"><span class="flow-icon tone-blue"><Mail size={16}/></span><div><strong>{$t('f2.s1')}</strong><small>{$t('f2.s1n')}</small></div></div>
@@ -155,21 +245,24 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
     <div class="flow-step"><span class="flow-icon tone-green"><Check size={16}/></span><div><strong>{$t('f2.s3')}</strong><small>{$t('f2.s3n')}</small></div><span class="mock-pill">{$t('f2.done')}</span></div>
    </div>
   </a>
-  <a class="feature-card" use:reveal={0} href="/services/website-design-development/">
-   <div class="feature-copy"><p class="feature-label">{$t('svc.web')}</p><h3>{$t('f3.title')}</h3><span class="round-arrow"><ArrowRight size={20} aria-hidden="true"/></span></div>
+  <a class="feature-card" aria-hidden={clone?'true':undefined} inert={clone} use:reveal={0} href="/services/website-design-development/">
+   <div class="feature-copy"><p class="feature-label">{$t('svc.web')}</p><h3>{$t('f3.title')}</h3><span class="learn-more">{$t('f.learn')} <ChevronRight size={18} aria-hidden="true"/></span></div>
    <div class="mock mock-browser" aria-hidden="true">
     <div class="browser-bar"><i></i><i></i><i></i><span>yourbrand.lk</span></div>
     <div class="browser-body"><div class="lines"><b></b><b></b><b></b><b></b><span class="mini-btn"></span></div><div class="orb"></div></div>
    </div>
   </a>
-  <a class="feature-card" use:reveal={90} href="/services/custom-software-development/">
-   <div class="feature-copy"><p class="feature-label">{$t('svc.soft')}</p><h3>{$t('f4.title')}</h3><span class="round-arrow"><ArrowRight size={20} aria-hidden="true"/></span></div>
+  <a class="feature-card" aria-hidden={clone?'true':undefined} inert={clone} use:reveal={90} href="/services/custom-software-development/">
+   <div class="feature-copy"><p class="feature-label">{$t('svc.soft')}</p><h3>{$t('f4.title')}</h3><span class="learn-more">{$t('f.learn')} <ChevronRight size={18} aria-hidden="true"/></span></div>
    <div class="mock" aria-hidden="true">
     <div class="mock-bar"><LayoutGrid size={16}/><strong>{$t('f4.bar')}</strong><span class="mock-pill">{$t('f4.live')}</span></div>
     <div class="dash-stats"><div><small>{$t('f4.orders')}</small><strong>128</strong></div><div><small>{$t('f4.tasks')}</small><strong>14</strong></div><div><small>{$t('f4.ontime')}</small><strong>96%</strong></div></div>
     <div class="dash-chart">{#each bars as height}<span style="height:{height}%"></span>{/each}</div>
    </div>
   </a>
+ {/snippet}
+ <div class="feature-grid" bind:this={rail} onscroll={onRailScroll}>
+  {@render serviceCards(true)}{@render serviceCards(false)}{@render serviceCards(true)}
  </div>
  <p class="row-title" use:reveal>{$t('ideas.title')}</p>
  <div class="idea-row">{#each ideas as idea,index}<a class="idea-card" use:reveal={index*80} href={idea.href}><span class="idea-icon tone-{idea.tone}"><idea.icon size={24} aria-hidden="true"/></span><strong>{idea.title} <ArrowRight size={18} aria-hidden="true"/></strong></a>{/each}</div>
@@ -187,7 +280,7 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
  <div class="section-actions" use:reveal><a class="button" href="/services/">{$t('dir.all')}</a><a class="button button-soft" href="/packages/">{$t('pkgTeaser.cta')}</a></div>
 </section>
 <section class="section" id="apilageai">
- <div class="showcase" use:reveal>
+ <div class="showcase" use:reveal use:tilt>
   <div class="showcase-copy">
    <p class="kicker showcase-kicker"><Lightbulb size={16} aria-hidden="true"/>{$t('show.kicker')}</p>
    <h2>{$t('show.title')}</h2>
@@ -200,7 +293,16 @@ async function submit(){sending=true;statusKey='';try{const response=await fetch
    </ul>
    <div class="section-actions">{#if APILAGE.url}<a class="button" href={APILAGE.url} target="_blank" rel="noopener">{$t('show.visit')} <ArrowUpRight size={16} aria-hidden="true"/></a>{/if}<a class={APILAGE.url?'button button-soft':'button'} href="/services/ai-education-syllabus-learning/">{$t('show.more')}</a></div>
   </div>
-  <div class="showcase-visual"><img src="/apilageai-laptop.webp" alt={$t('show.alt')} width="2000" height="1149" loading="lazy" decoding="async"></div>
+  <div class="showcase-visual">
+   <span class="laptop-floor" aria-hidden="true"></span>
+   <div class="laptop-stage">
+    <img src="/apilageai-laptop.webp" alt={$t('show.alt')} width="2000" height="1149" loading="lazy" decoding="async">
+    <span class="laptop-sheen" aria-hidden="true"></span>
+    <span class="laptop-chip chip-a" aria-hidden="true"><span class="idea-icon tone-orange"><Bot size={15}/></span>{$t('show.chip1')}</span>
+    <span class="laptop-chip chip-b" aria-hidden="true"><span class="idea-icon tone-green"><Users size={15}/></span>{$t('show.chip2')}</span>
+    <span class="laptop-chip chip-c" aria-hidden="true"><span class="idea-icon tone-blue"><Check size={15}/></span>{$t('show.chip3')}</span>
+   </div>
+  </div>
  </div>
 </section>
 <section class="section" id="approach">

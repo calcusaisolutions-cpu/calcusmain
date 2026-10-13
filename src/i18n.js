@@ -21,6 +21,8 @@ const messages = {
   'hero.explore': 'Let’s explore your idea', 'hero.dunno': 'I don’t know how?',
   'ask.prompt': 'Tell me what you do: your business, your job, or the startup you’re dreaming up.',
   'ask.reply': 'Love it! Let’s find where AI can help. I’ve added that to the form below.',
+  'ask.thinking': 'Let me look through everything we do for what fits you…', 'ask.busy': 'So many questions! Give me a minute and try again.',
+  'adv.title': 'Suggested for you', 'adv.package': 'Package', 'adv.services': 'Services that fit', 'adv.ideas': 'Ideas for your field', 'adv.talk': 'Talk to us about this', 'adv.again': 'Ask something else', 'adv.prefill': 'Suggested:',
   'ask.placeholder': 'e.g. I run a small bakery in Kandy', 'ask.label': 'What do you do?', 'ask.send': 'Send', 'ask.close': 'Close',
   'spot.sales': 'Sales this week', 'spot.summarise': 'Summarise this week’s sales', 'spot.draft': 'Draft reply', 'spot.ready': 'Ready',
   'spot.reply': 'Help me reply to this customer', 'spot.headline': 'Intelligent help for every business', 'spot.title': 'AI solutions for everyone in Sri Lanka',
@@ -29,7 +31,7 @@ const messages = {
   'spot.3.title': 'Websites people remember', 'spot.3.tag': 'Web & 3D', 'spot.3.note': 'Motion and 3D experiences',
   'spot.4.title': 'Software built around you', 'spot.4.tag': 'Custom software', 'spot.4.note': 'Apps and internal tools',
   'spot.5.title': 'Made in Sri Lanka, for all of Sri Lanka', 'spot.5.tag': 'Company', 'spot.5.note': 'Our approach',
-  'services.kicker': 'What we do', 'services.title': 'A smarter way to move forward.',
+  'services.kicker': 'What we do', 'services.title': 'A smarter way to move forward.', 'services.every': 'Every service we offer', 'f.learn': 'Learn more',
   'services.lede': 'Your goals come first. Together, we find where AI, automation, and thoughtful software can make a difference.',
   'f1.title': 'Assistants shaped around the way you work.', 'f1.bar': 'Business assistant', 'f1.online': 'Online',
   'f1.user': 'Which orders still need a follow-up this week?', 'f1.bot': 'Three orders are waiting on a reply. Want me to draft the follow-up messages?', 'f1.ask': 'Ask anything…',
@@ -74,6 +76,8 @@ const messages = {
   'hero.explore': 'ඔයාගේ idea එක බලමු', 'hero.dunno': 'කොහොමද කියලා දන්නේ නෑ?',
   'ask.prompt': 'මට කියන්න ඔයා මොකද කරන්නේ කියලා — business එකක්ද, job එකක්ද, නැත්නම් හිතේ තියෙන startup එකක්ද?',
   'ask.reply': 'නියමයි! AI වලින් උදව් කරන්න පුළුවන් තැන් හොයමු. මම ඒක පහළ form එකට දැම්මා.',
+  'ask.thinking': 'පොඩ්ඩක් ඉන්න, අපි කරන දේවල් අතරින් ඔයාට ගැලපෙන දේ හොයනවා…', 'ask.busy': 'ගොඩක් ප්‍රශ්න ආවා! විනාඩියකින් ආයෙත් try කරන්න.',
+  'adv.title': 'ඔයාට ගැලපෙන දේවල්', 'adv.package': 'Package එක', 'adv.services': 'ගැලපෙන සේවා', 'adv.ideas': 'ඔයාගේ field එකට AI ideas', 'adv.talk': 'මේ ගැන අපිත් එක්ක කතා කරමු', 'adv.again': 'වෙන දෙයක් අහන්න', 'adv.prefill': 'යෝජනා:',
   'ask.placeholder': 'උදා: මම මහනුවර පොඩි bakery එකක් කරනවා', 'ask.label': 'ඔයා මොකද කරන්නේ?', 'ask.send': 'යවන්න', 'ask.close': 'වහන්න',
   'spot.sales': 'මේ සතියේ sales', 'spot.summarise': 'මේ සතියේ sales ටික කෙටියෙන් කියන්න', 'spot.draft': 'Reply එකේ draft එක', 'spot.ready': 'ලෑස්තියි',
   'spot.reply': 'මේ customer ට reply කරන්න උදව් කරන්න', 'spot.headline': 'හැම business එකකටම smart උදව්වක්', 'spot.title': 'ලංකාවේ හැමෝටම AI විසඳුම්',
@@ -82,7 +86,7 @@ const messages = {
   'spot.3.title': 'මතක හිටින websites', 'spot.3.tag': 'Web සහ 3D', 'spot.3.note': 'Motion සහ 3D අත්දැකීම්',
   'spot.4.title': 'ඔයාට ගැලපෙන්න හදපු software', 'spot.4.tag': 'Custom software', 'spot.4.note': 'Apps සහ ඇතුළේ tools',
   'spot.5.title': 'ලංකාවේ හදලා, මුළු ලංකාවටම', 'spot.5.tag': 'අපි ගැන', 'spot.5.note': 'අපේ ක්‍රමය',
-  'services.kicker': 'අපි කරන දේ', 'services.title': 'ඉස්සරහට යන්න smart විදිහක්.',
+  'services.kicker': 'අපි කරන දේ', 'services.title': 'ඉස්සරහට යන්න smart විදිහක්.', 'services.every': 'අපේ හැම සේවාවක්ම', 'f.learn': 'තව බලන්න',
   'services.lede': 'ඔයාගේ ඉලක්ක තමයි මුලින්ම. AI, automation සහ හොඳට හිතලා හදපු software වලින් වෙනසක් කරන්න පුළුවන් තැන් අපි එකට හොයමු.',
   'f1.title': 'ඔයා වැඩ කරන විදිහටම හැදෙන assistants.', 'f1.bar': 'Business assistant', 'f1.online': 'Online',
   'f1.user': 'මේ සතියේ තාම follow-up කරන්න ඕන orders මොනවද?', 'f1.bot': 'Orders තුනක් reply එකක් එනකම් ඉන්නවා. Follow-up messages ටික මම draft කරන්නද?', 'f1.ask': 'ඕනම දෙයක් අහන්න…',
@@ -142,7 +146,7 @@ Object.assign(messages.en, {
  'opt.unsure': 'Not sure yet', 'opt.packages': 'Packages',
  'nf.meta': 'Page not found | Calcus AI', 'nf.title': 'This page wandered off.', 'nf.text': 'The link may be old or mistyped. Here are some good places to start.', 'nf.home': 'Back to home',
  'cta.title': 'Not sure which service you need?', 'cta.text': 'Tell us what you do and what slows you down. We’ll suggest the simplest thing that works — AI or not.', 'cta.button': 'Talk to us',
- 'footer.explore': 'Explore', 'footer.hq': 'Head office', 'contact.hq': 'Visit Calcus HQ', 'footer.allServices': 'All services', 'footer.home': 'Home', 'breadcrumb': 'Breadcrumb'
+ 'footer.explore': 'Explore', 'footer.hq': 'Head office', 'contact.hq': 'Visit Calcus HQ', 'footer.allServices': 'All services', 'footer.teachers': 'For teachers', 'footer.home': 'Home', 'breadcrumb': 'Breadcrumb'
 });
 Object.assign(messages.si, {
  'nav.packages': 'Packages', 'nav.allServices': 'ඔක්කොම සේවා',
@@ -171,7 +175,7 @@ Object.assign(messages.si, {
  'opt.unsure': 'තාම විශ්වාස නෑ', 'opt.packages': 'Packages',
  'nf.title': 'මේ page එක කොහෙද ගිහින්.', 'nf.text': 'Link එක පරණ වෙන්න හරි වැරදියට type වෙලා වෙන්න හරි පුළුවන්. මෙතනින් පටන් ගන්න.', 'nf.home': 'මුල් පිටුවට යන්න',
  'cta.title': 'ඔයාට ඕන මොන සේවාවද කියලා විශ්වාස නැද්ද?', 'cta.text': 'ඔයා කරන දේයි, වැඩ හිර කරන දේයි කියන්න. වැඩ කරන ලේසිම විසඳුම අපි කියන්නම් — AI එක්ක හරි නැතුව හරි.', 'cta.button': 'අපිත් එක්ක කතා කරන්න',
- 'footer.explore': 'බලන්න', 'footer.hq': 'ප්‍රධාන කාර්යාලය', 'contact.hq': 'Calcus HQ එකට එන්න', 'footer.allServices': 'ඔක්කොම සේවා', 'footer.home': 'මුල් පිටුව', 'breadcrumb': 'Breadcrumb'
+ 'footer.explore': 'බලන්න', 'footer.hq': 'ප්‍රධාන කාර්යාලය', 'contact.hq': 'Calcus HQ එකට එන්න', 'footer.allServices': 'ඔක්කොම සේවා', 'footer.teachers': 'ගුරුවරුන්ට', 'footer.home': 'මුල් පිටුව', 'breadcrumb': 'Breadcrumb'
 });
 
 Object.assign(messages.en,{
@@ -180,7 +184,7 @@ Object.assign(messages.en,{
  'show.kicker':'Did you know?',
  'show.title':'Calcus AI powers Sri Lanka’s first AI + human learning community.',
  'show.lede':'is where learners ask questions, share answers and learn together — with real people and AI helping side by side, from Chemistry and Biology to Accounting and study skills.',
- 'show.p1':'Ask any question, in any subject','show.p2':'Answers from people and from AI','show.p3':'Chat one-to-one with ApilageAI','show.p4':'Polls, topics and top contributors',
+ 'show.p1':'Ask any question, in any subject','show.p2':'Answers from people and from AI','show.p3':'Chat one-to-one with ApilageAI','show.p4':'Polls, topics and top contributors', 'show.chip1':'ApilageAI answered', 'show.chip2':'Real people replying', 'show.chip3':'Marked helpful',
  'show.visit':'Visit ApilageAI','show.more':'See our education AI',
  'show.alt':'The ApilageAI community feed on a laptop, with questions, a poll and topics such as Chemistry, Accounting and Biology',
  'mission.label':'Why we build Calcus',
@@ -192,7 +196,7 @@ Object.assign(messages.si,{
  'show.kicker':'ඔයා දන්නවද?',
  'show.title':'ලංකාවේ පළවෙනි AI + මිනිස් learning community එකට බලය දෙන්නේ Calcus AI.',
  'show.lede':'එකේ ඉගෙන ගන්න අය ප්‍රශ්න අහනවා, උත්තර බෙදාගන්නවා, එකට ඉගෙන ගන්නවා — Chemistry, Biology ඉඳන් Accounting දක්වා, ඇත්ත මිනිස්සුයි AI එකයි එකට උදව් කරනවා.',
- 'show.p1':'ඕනම subject එකක ඕනම ප්‍රශ්නයක් අහන්න','show.p2':'මිනිස්සුන්ගෙනුයි AI එකෙනුයි උත්තර','show.p3':'ApilageAI එක්ක කෙලින්ම chat කරන්න','show.p4':'Polls, topics සහ top contributors',
+ 'show.p1':'ඕනම subject එකක ඕනම ප්‍රශ්නයක් අහන්න','show.p2':'මිනිස්සුන්ගෙනුයි AI එකෙනුයි උත්තර','show.p3':'ApilageAI එක්ක කෙලින්ම chat කරන්න','show.p4':'Polls, topics සහ top contributors', 'show.chip1':'ApilageAI උත්තර දුන්නා', 'show.chip2':'මිනිස්සු reply කරනවා', 'show.chip3':'Helpful කියලා දැම්මා',
  'show.visit':'ApilageAI බලන්න','show.more':'අපේ education AI බලන්න',
  'mission.label':'ඇයි අපි Calcus හදන්නේ',
  'mission.text':'අපි Calcus හදන්නේ *quality* AI, *දරාගන්න* පුළුවන් මිලකට ලංකාවේ *හැමෝටම* ගෙනියන්න. ලොකු businesses වලට විතරක් නෙවෙයි — *startups,* පොඩි කඩ, schools, ගොවියෝ, freelancers, ගෙවල් වලටත්. එක category එකකට නෙවෙයි. *හැම* category එකකටම.'

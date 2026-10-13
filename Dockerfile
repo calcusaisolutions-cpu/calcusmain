@@ -9,7 +9,8 @@ COPY public ./public
 RUN npm run build
 FROM golang:1.24-alpine AS backend
 WORKDIR /app
-COPY go.mod ./
+COPY go.mod go.sum ./
+RUN go mod download
 COPY server ./server
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /studio ./server
 FROM alpine:3.22

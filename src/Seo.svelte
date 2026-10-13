@@ -6,8 +6,12 @@ export let description;
 export let path='/';
 export let jsonLd=[];
 export let noindex=false;
+// Link-preview image: a page can pass its own 1200×630 picture; otherwise the site-wide one is used.
+export let image='/og-image.png';
+export let imageAlt='Calcus AI — AI, software and digital solutions across Sri Lanka';
 const url=SITE_URL+path;
-const image=SITE_URL+'/og-image.png';
+const siteImage=SITE_URL+'/og-image.png';
+$: shareImage=SITE_URL+image;
 // Site-wide identity: who Calcus AI is, where it works and what it offers. Every page carries it so any entry point is understood.
 const organization={
  '@type':['Organization','ProfessionalService'],
@@ -19,7 +23,7 @@ const organization={
  alternateName:'CalcusAi',
  url:SITE_URL+'/',
  logo:SITE_URL+'/logo-small.png',
- image,
+ image:siteImage,
  description:'Sri Lankan technology company building AI-powered and traditional software: chatbots, automation, websites, mobile apps, business systems, e-commerce, LMS, cloud hosting and IoT for businesses across Sri Lanka.',
  slogan:'Every Digital Solution. One Trusted Partner.',
  address:{'@type':'PostalAddress',name:COMPANY.office,streetAddress:COMPANY.street,addressLocality:COMPANY.locality,addressRegion:COMPANY.region,addressCountry:'LK'},
@@ -47,13 +51,15 @@ $: graph=JSON.stringify({'@context':'https://schema.org','@graph':[organization,
  <meta property="og:title" content={title}>
  <meta property="og:description" content={description}>
  <meta property="og:url" content={url}>
- <meta property="og:image" content={image}>
+ <meta property="og:image" content={shareImage}>
+ <meta property="og:image:alt" content={imageAlt}>
  <meta property="og:image:width" content="1200">
  <meta property="og:image:height" content="630">
  <meta name="twitter:card" content="summary_large_image">
  <meta name="twitter:title" content={title}>
  <meta name="twitter:description" content={description}>
- <meta name="twitter:image" content={image}>
+ <meta name="twitter:image" content={shareImage}>
+ <meta name="twitter:image:alt" content={imageAlt}>
  <meta name="geo.region" content="LK">
  <meta name="geo.placename" content={`${COMPANY.locality}, ${COMPANY.country}`}>
  {@html `<script type="application/ld+json">${graph}</script>`}

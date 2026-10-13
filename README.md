@@ -25,7 +25,24 @@ Docker uses a persistent named volume for enquiries. Configure `PORT` and `DATA_
 
 ## Enquiries
 
-POST `/api/enquiries` validates the brief and stores it in `data/enquiries.jsonl` (or `DATA_DIR`). These are local records, not emails; connect a mail provider or CRM before promising email notifications. Back up this data and set an appropriate retention policy. For a public launch, put the server behind HTTPS and add edge rate limiting. Do not expose the data directory as static content.
+POST `/api/enquiries` validates the brief, stores it in `data/enquiries.jsonl` (or `DATA_DIR`), then emails it to **calcusaisolutions@gmail.com** (override with `ENQUIRY_TO`). The email's Reply-To is the visitor, so hitting Reply answers them directly. Saving happens first, so a mail outage never loses an enquiry or shows the visitor an error; failures are logged.
+
+Email is sent through Gmail SMTP and is off until these are set (copy `.env.example` to `.env`; Docker Compose reads it automatically, or export them before `go run ./server`):
+
+- `SMTP_USER` — the Gmail address that sends the mail (e.g. calcusaisolutions@gmail.com)
+- `SMTP_PASSWORD` — a Gmail **App Password** for that account (Google Account → Security → turn on 2-Step Verification → App passwords). The normal account password will not work.
+- Optional: `ENQUIRY_TO`, `ENQUIRY_FROM`, `SMTP_HOST` (default smtp.gmail.com), `SMTP_PORT` (default 587, STARTTLS).
+
+The server logs at startup whether email is configured. Back up the saved data and set an appropriate retention policy. For a public launch, put the server behind HTTPS and add edge rate limiting. Do not expose the data directory as static content.
+
+## "I don't know how?" advisor
+
+When a visitor clicks **I don't know how?** and says what they do, the page posts it to `/api/advise`. The Go server sends it to Claude (`claude-opus-5-5`, low effort for a quick answer) along with the service and package catalogue, which the build writes to `dist/advisor-catalog.json` from `servicelist.md`. Claude returns a short reply, the best-fitting package, up to three services and a few AI ideas for the visitor's field, in English or Sinhala. A JSON schema limits suggestions to real catalogue entries, and the server checks them again, so every link points at a real page. "Talk to us about this" carries their answer and the suggestions into the contact form.
+
+- Set `ANTHROPIC_API_KEY` (see `.env.example`). Without it, or if Claude is unreachable, the box falls back to filling in the contact form.
+- Cost guard: each visitor gets 5 questions a minute and 30 a day, and the whole site gets `ADVISOR_DAILY_LIMIT` (default 500) a day. Behind a reverse proxy, set `TRUST_PROXY=1` so the limits count real visitors rather than the proxy.
+- If a safety classifier declines a request, the API's server-side fallback (`fallbacks: "default"`) answers on a suitable fallback model in the same call.
+- The catalogue prompt is cached, so repeated questions mostly pay only for the visitor's line and the answer.
 
 ## Animation and compatibility
 

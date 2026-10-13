@@ -5,6 +5,7 @@
 - Website: https://calcus.ai/
 - All services: https://calcus.ai/services/
 - Packages: https://calcus.ai/packages/
+- For teachers and tuition classes (teacher website, class management, Z-score grade analyser, subject AI in Sinhala/Tamil/English, from LKR 80,000): https://calcus.ai/packages/for-teachers/
 - Contact / project enquiries: https://calcus.ai/#contact
 - Company: Calcusai (Pvt) Ltd
 - Head office: Calcus HQ, 21/2 Rajamahavihara Road, Maharagama, Sri Lanka

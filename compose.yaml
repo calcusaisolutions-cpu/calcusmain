@@ -3,6 +3,14 @@ services:
     build: .
     ports:
       - "8080:8080"
+    # Email settings come from a .env file next to this one (see .env.example); without them enquiries are only saved.
+    environment:
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      ENQUIRY_TO: ${ENQUIRY_TO:-calcusaisolutions@gmail.com}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ADVISOR_DAILY_LIMIT: ${ADVISOR_DAILY_LIMIT:-500}
+      TRUST_PROXY: ${TRUST_PROXY:-}
     volumes:
       - enquiries:/data
     restart: unless-stopped

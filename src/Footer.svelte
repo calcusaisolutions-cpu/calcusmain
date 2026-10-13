@@ -18,7 +18,7 @@ import { categories, serviceUrl, COMPANY, COMPANY_MAP } from './data/services.js
    <address class="footer-address"><strong>{COMPANY.office}</strong><a href={COMPANY_MAP} rel="noopener" target="_blank">{COMPANY.street}<br>{COMPANY.locality}, {COMPANY.country}</a><a class="footer-phone" href="tel:{COMPANY.phone}">{COMPANY.phoneDisplay}</a></address>
    <div class="footer-explore">
     <h4>{$t('footer.explore')}</h4>
-    <a href="/">{$t('footer.home')}</a><a href="/services/">{$t('footer.allServices')}</a><a href="/packages/">{$t('nav.packages')}</a><a href="/#approach">{$t('nav.approach')}</a><a href="/#contact">{$t('nav.contact')}</a>
+    <a href="/">{$t('footer.home')}</a><a href="/services/">{$t('footer.allServices')}</a><a href="/packages/">{$t('nav.packages')}</a><a href="/packages/for-teachers/">{$t('footer.teachers')}</a><a href="/#approach">{$t('nav.approach')}</a><a href="/#contact">{$t('nav.contact')}</a>
    </div>
   </div>
   <nav class="footer-directory" aria-label={$t('footer.allServices')}>

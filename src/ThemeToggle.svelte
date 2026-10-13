@@ -3,7 +3,8 @@ import { onMount } from 'svelte';
 import { Monitor, Sun, Moon } from '@lucide/svelte';
 import { t } from './i18n.js';
 const options=[{value:'system',icon:Monitor},{value:'light',icon:Sun},{value:'dark',icon:Moon}];
-let theme='system';
+// Light is the default. A visitor's choice, including "system" (follow the OS), is saved and restored.
+let theme='light';
 const media=typeof matchMedia==='function'?matchMedia('(prefers-color-scheme: dark)'):null;
 function apply(){
  const root=document.documentElement;
@@ -11,7 +12,7 @@ function apply(){
  const dark=theme==='dark'||(theme==='system'&&media?.matches);
  document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#191919':'#ffffff');
 }
-function choose(value){theme=value;try{if(value==='system')localStorage.removeItem('theme');else localStorage.setItem('theme',value);}catch{}apply();}
+function choose(value){theme=value;try{if(value==='light')localStorage.removeItem('theme');else localStorage.setItem('theme',value);}catch{}apply();}
 function key(event,index){
  if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'].includes(event.key))return;
  event.preventDefault();
@@ -20,7 +21,7 @@ function key(event,index){
  event.currentTarget.parentElement.children[next].focus();
 }
 onMount(()=>{
- try{const saved=localStorage.getItem('theme');if(saved==='light'||saved==='dark')theme=saved;}catch{}
+ try{const saved=localStorage.getItem('theme');if(saved==='dark'||saved==='system')theme=saved;}catch{}
  apply();
  const change=()=>{if(theme==='system')apply();};
  media?.addEventListener('change',change);

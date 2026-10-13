@@ -80,6 +80,7 @@ func enquiries(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"could not save enquiry"}`, 503)
 		return
 	}
+	go notifyEnquiry(e)
 	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w, `{"saved":true}`)
 }
@@ -121,9 +122,17 @@ func staticFiles(dir string) http.Handler {
 	})
 }
 
+// movedPages permanently redirects old addresses to where the page lives now, so shared links and
+// search rankings carry over.
+var movedPages = map[string]string{
+	"/packes/for-teachers":  "/packages/for-teachers/",
+	"/packes/for-teachers/": "/packages/for-teachers/",
+}
+
 func handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/enquiries", enquiries)
+	mux.HandleFunc("/api/advise", advise)
 	mux.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		io.WriteString(w, `{"status":"ok"}`)
@@ -134,6 +143,13 @@ func handler() http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("X-Frame-Options", "DENY")
+		if target, ok := movedPages[r.URL.Path]; ok {
+			if r.URL.RawQuery != "" {
+				target += "?" + r.URL.RawQuery
+			}
+			http.Redirect(w, r, target, http.StatusMovedPermanently)
+			return
+		}
 		switch path := r.URL.Path; {
 		case strings.HasPrefix(path, "/assets/"):
 			// Vite fingerprints these file names, so they can be cached forever.
@@ -190,6 +206,16 @@ func main() {
 		port = "8080"
 	}
 	s := &http.Server{Addr: ":" + port, Handler: handler(), ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 15 * time.Second, IdleTimeout: 60 * time.Second}
+	if c, ok := mailSettings(); ok {
+		log.Printf("Enquiries will be emailed to %s via %s", c.to, c.host)
+	} else {
+		log.Printf("SMTP_USER/SMTP_PASSWORD not set: enquiries are saved to disk but not emailed")
+	}
+	if advisorConfigured() {
+		log.Printf("\"I don't know how?\" advisor is on (%s)", advisorModel)
+	} else {
+		log.Printf("ANTHROPIC_API_KEY not set: the \"I don't know how?\" advisor is off and hands visitors to the contact form")
+	}
 	log.Printf("Calcus Ai listening on :%s", port)
 	log.Fatal(s.ListenAndServe())
 }

@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en" class="preloading">
+<html lang="en" class="preloading" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ffffff">
     <script>
-    // Apply the saved theme before first paint so there is no flash. "system" (the default) follows the OS.
-    (function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;
+    // Apply the saved theme before first paint so there is no flash. Light is the default; "system" (follow the OS) only applies when the visitor picks it.
+    (function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.dataset.theme='dark';else if(t==='system')delete document.documentElement.dataset.theme;
     if(localStorage.getItem('lang')==='si'){document.documentElement.lang='si';var l=document.createElement('link');l.id='font-sinhala';l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;500;600;700;800&display=swap';document.head.appendChild(l);}}catch(e){}
     var d=document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
     document.querySelector('meta[name="theme-color"]').content=d?'#191919':'#ffffff';})();
@@ -16,6 +16,8 @@
     <!-- Load the font without blocking first paint; text renders in the fallback until Inter arrives. -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <!-- Sora is only used for the "CalcusAi" wordmark, so only those letters are downloaded (a few KB). -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@700&text=CalcusAi&display=swap">
     <link rel="icon" type="image/png" href="/logo-small.png">
     <!--app-head-->
     <style>
@@ -25,7 +27,7 @@
     @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) #preloader{background:#191919;color:#ededeb}}
     .loaded #preloader{opacity:0;visibility:hidden;pointer-events:none}
     .preloader-inner{display:flex;flex-direction:column;align-items:center;gap:22px}
-    .preloader-mark{font:900 clamp(34px,7vw,56px)/1 "Arial Black","Arial Bold",Gadget,Arial,sans-serif;letter-spacing:-.005em;animation:preloader-in .6s cubic-bezier(.2,.7,.2,1) both}
+    .preloader-mark{font:700 clamp(34px,7vw,56px)/1 Sora,"Arial Black",Arial,sans-serif;letter-spacing:-.05em;animation:preloader-in .6s cubic-bezier(.2,.7,.2,1) both}
     .preloader-mark span{color:#5cb944}
     .preloader-dots{display:flex;gap:10px}
     .preloader-dots i{width:12px;height:12px;border-radius:50%;animation:preloader-bounce 1s ease-in-out infinite}

@@ -20,6 +20,7 @@ const jsonLd=[
  <div class="section-head" use:reveal><p class="kicker">{$t('pk.kicker')}</p><h1 class="page-title">{$t('pk.title')}</h1><p class="lede">{$t('pk.lede')}</p></div>
 </section>
 <section class="section">
+ <a class="cta-band" href="/packages/for-teachers/" style="margin-bottom:32px"><div><p class="kicker">FOR TEACHERS &amp; TUITION INSTITUTES</p><h2 style="font-size:36px">Your complete teaching package.</h2><p>From LKR 80,000 · Website, student management, learning materials and more.</p></div><span class="button">Explore the package <ArrowRight size={18}/></span></a>
  <div class="package-grid">
   {#each packages as pack,index (pack.slug)}
   <article class="package-card" id={pack.slug} use:reveal={(index%3)*80}>

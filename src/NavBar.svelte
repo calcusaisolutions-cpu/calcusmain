@@ -6,7 +6,7 @@ import { categories, serviceUrl } from './data/services.js';
 /** Which page is showing, so the right nav item is marked as current. */
 export let page='home';
 let open=false, scrolled=false, brandVisible=page!=='home', active='', closeTimer, root, trigger;
-$: current=page==='services'||page==='service'?'services':page==='packages'?'packages':active;
+$: current=page==='services'||page==='service'?'services':(page==='packages'||page==='teachers')?'packages':active;
 function show(){clearTimeout(closeTimer);open=true;}
 function hide(){clearTimeout(closeTimer);closeTimer=setTimeout(()=>open=false,180);}
 function close(){clearTimeout(closeTimer);open=false;}

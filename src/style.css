@@ -1,7 +1,13 @@
 *{box-sizing:border-box}:root{--bg:#fff;--elevated:#fff;--surface:#f6f6f4;--surface-hover:#f0f0ed;--inset:#fafbf9;--chip:#f1f1ef;--chip-hover:#e7e7e4;--border:#ececea;--border-strong:#dcdcd8;--line:#dde3d9;--text:#111;--text-2:rgba(0,0,0,.78);--text-3:#6b6b68;--text-4:#73736f;--blue-text:#0068a8;--blue-soft-text:#0068a8;--bubble:#0277bb;--btn-bg:#111;--btn-text:#fff;--btn-hover:#2a2a2a;--accent-text:#398600;--green-soft:#eef6e9;--green-soft-text:#3c7a26;--green-glow:#e6f5d9;--green-widget:#dcf0d0;--green-widget-text:#1d4b10;--green-bar:#d5eacb;--blue-soft:#e6f3fb;--backdrop:rgba(255,255,255,.35);--shadow-pop:rgba(0,0,0,.10);color-scheme:light;--radius:24px;--orange:#f29a04;--orange-deep:#c97400;--blue:#0289d3;--blue-deep:#0068a8}
 html{scroll-behavior:smooth;scroll-padding-top:110px}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Noto Sans Sinhala","Sinhala Sangam MN","Iskoola Pota",Arial,Helvetica,sans-serif}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:5px}p{line-height:1.7}em{font-style:normal;color:var(--accent-text)}
-header{position:fixed;inset:12px 3% auto;z-index:20;height:64px;padding:0 10px 0 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-radius:999px;background:var(--bg);border:1px solid var(--border);box-shadow:0 6px 24px rgba(0,0,0,.05);transition:box-shadow .2s,border-color .2s}
-header.scrolled{box-shadow:0 10px 30px rgba(0,0,0,.09)}.mesh-background canvas{display:block;width:100%;height:100%}
+header{position:fixed;inset:12px 3% auto;z-index:20;height:64px;padding:0 10px 0 20px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-radius:999px;border:1px solid var(--nav-border);box-shadow:0 6px 24px var(--nav-shadow),inset 0 1px 0 var(--nav-highlight);transition:box-shadow .2s,border-color .2s}
+/* Frosted glass with a faint brand tint: green behind the logo fading through white to a hint of blue behind the button.
+   It lives on a pseudo-element because backdrop-filter on the header itself would trap the fixed-position children. */
+header::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--nav-bg);-webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%)}
+header.scrolled{box-shadow:0 10px 30px var(--nav-shadow-scrolled),inset 0 1px 0 var(--nav-highlight)}
+:root{--nav-bg:linear-gradient(100deg,rgba(234,246,226,.86) 0%,rgba(255,255,255,.80) 38%,rgba(255,255,255,.80) 66%,rgba(231,242,250,.86) 100%);--nav-border:rgba(92,185,68,.20);--nav-highlight:rgba(255,255,255,.9);--nav-shadow:rgba(44,109,23,.07);--nav-shadow-scrolled:rgba(44,109,23,.12)}
+:root[data-theme="dark"]{--nav-bg:linear-gradient(100deg,rgba(30,44,26,.82) 0%,rgba(28,28,28,.78) 38%,rgba(28,28,28,.78) 66%,rgba(22,36,48,.82) 100%);--nav-border:rgba(127,207,94,.16);--nav-highlight:rgba(255,255,255,.05);--nav-shadow:rgba(0,0,0,.25);--nav-shadow-scrolled:rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--nav-bg:linear-gradient(100deg,rgba(30,44,26,.82) 0%,rgba(28,28,28,.78) 38%,rgba(28,28,28,.78) 66%,rgba(22,36,48,.82) 100%);--nav-border:rgba(127,207,94,.16);--nav-highlight:rgba(255,255,255,.05);--nav-shadow:rgba(0,0,0,.25);--nav-shadow-scrolled:rgba(0,0,0,.4)}}.mesh-background canvas{display:block;width:100%;height:100%}
 /* The mesh covers only the upper part of the hero and fades out towards the middle. */
 .hero-mesh{position:absolute;inset:0 0 auto;height:60%;z-index:0;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 45%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 45%,transparent 100%)}
 .hero>:not(.hero-mesh){position:relative;z-index:1}
@@ -9,7 +15,7 @@ header>.brand{justify-self:start;transition:opacity .35s ease,transform .35s eas
 header>.brand.brand-hidden{opacity:0;visibility:hidden;transform:translateY(-6px)}
 header>.nav-actions{display:flex;align-items:center;gap:8px;justify-self:end}
 .nav-services-mobile{display:none;padding:7px 12px;border-radius:8px;background:var(--chip);font-size:14px;font-weight:500;color:var(--text)}
-.brand{display:flex;align-items:center;gap:9px;letter-spacing:-1.2px}.brand img{width:48px;height:44px;object-fit:contain}.wordmark{font-family:"Arial Black","Arial Bold",Gadget,Arial,sans-serif;font-size:25px;font-weight:900;letter-spacing:-.005em;color:var(--text)}.wordmark span{color:#5cb944}header nav{display:flex;gap:4px;align-items:center;font-size:14.5px}
+.brand{display:flex;align-items:center;gap:9px;letter-spacing:-1.2px}.brand img{width:48px;height:44px;object-fit:contain}.wordmark{font-family:Sora,"Arial Black",Arial,sans-serif;font-size:25px;font-weight:700;letter-spacing:-.05em;color:var(--text)}.wordmark span{color:#5cb944}header nav{display:flex;gap:4px;align-items:center;font-size:14.5px}
 header nav>a,.menu-trigger{position:relative;display:inline-flex;align-items:center;gap:5px;padding:10px 15px;border:0;border-radius:999px;background:none;color:var(--text-2);font-weight:500;cursor:pointer;transition:color .2s,background .2s}
 header nav>a:hover,.menu-trigger:hover,.menu-trigger.open{color:var(--text);background:var(--chip)}
 .nav-label{position:relative}
@@ -51,20 +57,43 @@ header nav .active .nav-label::after{content:"";position:absolute;left:0;right:0
 .kicker{margin:0 0 12px;font-size:16px;font-weight:500;color:var(--text-3)}
 h2{margin:0;font-size:clamp(36px,4.6vw,64px);font-weight:700;letter-spacing:-.035em;line-height:1.05;color:var(--text)}
 .lede{margin:18px 0 0;max-width:600px;font-size:19px;line-height:1.5;letter-spacing:-.01em;color:var(--text-3)}
-/* Service cards: one horizontal row that scrolls/swipes sideways and snaps card by card. */
-.feature-grid{display:flex;gap:20px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:0;padding-bottom:6px;scrollbar-width:none}
+/* Service cards: a full-bleed row that scrolls/swipes sideways and snaps card by card; the first card lines up with the section text.
+   scroll-padding % would be relative to the rail itself, so it repeats the section gutter in vw. */
+body{overflow-x:clip}
+.feature-grid{--rail-inset:calc(50vw - 50%);display:flex;gap:20px;margin-inline:calc(50% - 50vw);padding:0 var(--rail-inset) 6px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:max(5vw,calc(55vw - 620px));scrollbar-width:none}
 .feature-grid::-webkit-scrollbar{display:none}
-.feature-grid>.feature-card{flex:0 0 min(560px,46%);scroll-snap-align:start}
-.feature-rail-controls{display:flex;justify-content:flex-end;gap:8px;margin:-8px 0 16px}
+.feature-grid>.feature-card{flex:0 0 min(400px,82vw);scroll-snap-align:start}
+.feature-rail-controls{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:-12px 0 28px}
+.rail-link{display:inline-flex;align-items:center;gap:2px;margin-left:auto;font-size:18px;font-weight:500;color:var(--blue-text)}
+.rail-link svg,.learn-more svg{transition:transform .2s}
+.rail-link:hover svg{transform:translateX(3px)}
+.rail-arrows{display:flex;gap:8px}
 .feature-rail-controls button{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--border);border-radius:50%;background:var(--elevated);color:var(--text);cursor:pointer;transition:background .15s,border-color .15s}
 .feature-rail-controls button:hover{background:var(--chip);border-color:var(--border-strong)}
-.feature-card{display:flex;flex-direction:column;gap:30px;min-height:520px;padding:34px 34px 0;overflow:hidden;border-radius:16px;background:var(--surface);transition:background .2s}
+.feature-card{--card-pad:32px;display:flex;flex-direction:column;gap:36px;min-height:560px;padding:var(--card-pad) var(--card-pad) 0;overflow:hidden;border-radius:26px;background:var(--surface);transition:background .2s}
 .feature-card:hover{background:var(--surface-hover)}
-.feature-copy{display:grid;grid-template-columns:1fr auto;column-gap:20px;align-items:start}
-.feature-label{grid-column:1/-1;margin:0 0 10px;font-size:15px;color:var(--text-3)}
-.feature-copy h3{margin:0;font-size:clamp(22px,2.2vw,28px);font-weight:700;letter-spacing:-.025em;line-height:1.2;color:var(--text)}
-.round-arrow{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--btn-bg);color:var(--btn-text);transition:transform .2s}
-.feature-card:hover .round-arrow{transform:translateX(3px)}
+.feature-copy{display:flex;flex-direction:column;align-items:flex-start}
+.feature-label{margin:0 0 14px;font-size:15px;font-weight:500;color:var(--text-3)}
+.feature-copy h3{margin:0;font-size:clamp(24px,2.5vw,31px);font-weight:700;letter-spacing:-.035em;line-height:1.14;color:var(--text)}
+.learn-more{display:inline-flex;align-items:center;gap:2px;margin-top:18px;font-size:17px;font-weight:500;color:var(--blue-text)}
+.feature-card:hover .learn-more svg{transform:translateX(3px)}
+/* The product mock sits at the bottom and runs off the card's right and bottom edges. */
+.feature-card>.mock{margin-right:calc(var(--card-pad) * -1);border-right:0;border-radius:14px 0 0 0}
+/* The AI card is the dark one: the chat floats straight on black, with no frame. */
+.feature-card.dark{background:#000;color:#fff}
+.feature-card.dark:hover{background:#0d0d0d}
+.feature-card.dark .feature-label{color:rgba(255,255,255,.62)}
+.feature-card.dark h3{color:#fff}
+.feature-card.dark .learn-more{color:#3ea6ff}
+.feature-card.dark>.mock{margin-right:0;padding:0 0 28px;border:0;border-radius:0;background:none;color:#fff;font-size:15px}
+.feature-card.dark .mock-bar{display:none}
+.feature-card.dark .bubble{max-width:88%;padding:13px 18px;border-radius:20px}
+.feature-card.dark .bubble.user{background:#1f1f21;color:#fff}
+.feature-card.dark .bubble.bot{background:#0a7cff;color:#fff}
+.feature-card.dark .mock-input{border-color:#2c2c2e;background:#111;color:rgba(255,255,255,.5)}
+.feature-card.dark .send{background:#fff;color:#000}
+:root[data-theme="dark"] .feature-card.dark{box-shadow:inset 0 0 0 1px #2a2a2a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .feature-card.dark{box-shadow:inset 0 0 0 1px #2a2a2a}}
 .mock{display:flex;flex-direction:column;gap:12px;min-height:300px;margin-top:auto;padding:22px;border:1px solid var(--border);border-bottom:0;border-radius:10px 10px 0 0;background:var(--elevated);font-size:13px;color:var(--text)}
 .mock-bar{display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .mock-bar strong{font-weight:600}
@@ -125,8 +154,8 @@ h2{margin:0;font-size:clamp(36px,4.6vw,64px);font-weight:700;letter-spacing:-.03
 .contact-copy>p:not(.feature-label){max-width:380px;font-size:16px;color:var(--text-3)}
 .contact-location{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:14px;font-weight:500;color:var(--blue-text)}
 footer{margin-top:120px}
-@media(max-width:900px){.principle-grid,.contact-card{grid-template-columns:1fr}.feature-grid>.feature-card{flex-basis:78%}.idea-row{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-card{min-height:0}.principle-card{min-height:360px}.contact-card{gap:30px}.section{padding-top:84px}}
-@media(max-width:600px){.section{padding:64px 4% 6px}.section-head{margin-bottom:30px}.lede{font-size:16px}.feature-card{gap:24px;padding:24px 22px 0}.mock{min-height:250px;padding:18px}.idea-row{grid-template-columns:1fr}.idea-card{min-height:0;gap:26px}.principle-card{min-height:320px;padding:26px}.contact-card{padding:26px 20px}.row-title{margin-top:52px}.browser-body{padding:20px}footer{margin-top:60px}}
+@media(max-width:900px){.principle-grid,.contact-card{grid-template-columns:1fr}.idea-row{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-card{min-height:0}.principle-card{min-height:360px}.contact-card{gap:30px}.section{padding-top:84px}}
+@media(max-width:600px){.section{padding:64px 4% 6px}.section-head{margin-bottom:30px}.lede{font-size:16px}.feature-card{--card-pad:22px;gap:24px;padding:24px 22px 0;border-radius:22px}.mock{min-height:250px;padding:18px}.idea-row{grid-template-columns:1fr}.idea-card{min-height:0;gap:26px}.principle-card{min-height:320px;padding:26px}.contact-card{padding:26px 20px}.row-title{margin-top:52px}.browser-body{padding:20px}footer{margin-top:60px}}
 /* Spotlight: the left feature stays pinned while the right column scrolls past it. */
 .spotlight{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:28px;align-items:start;max-width:1440px;margin:0 auto;padding:48px 3% 0}
 .spotlight-feature{position:sticky;top:84px;display:flex;flex-direction:column;gap:22px}
@@ -166,8 +195,8 @@ h2.spotlight-title{font-size:clamp(28px,3.4vw,52px);font-weight:600;letter-spaci
 .button-soft{background:var(--chip);color:var(--text)}
 .button-soft:hover{background:var(--chip-hover)!important}.button:disabled{opacity:.6;cursor:wait}
 /* The opening composition shares one viewport with its message and action. */
-.hero{position:relative;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:18px;height:100svh;min-height:600px;max-height:1100px;padding:96px 5% 36px;background:var(--bg);overflow:hidden}.hero-art.hero-composition{position:relative;isolation:isolate;justify-self:center;width:min(100%,1400px);height:100%;min-height:0;container-type:size}.hero-canvas{position:absolute;left:0;right:0;bottom:0;margin:0 auto;width:min(100cqw,178cqh);aspect-ratio:1218/861;clip-path:inset(-50% -50% 0 -50%);container-type:inline-size}
-.network-map{position:absolute;z-index:0;left:42.4%;top:7.8%;width:57.1%;height:auto;opacity:.85}.hero h1.hero-wordmark{position:absolute;z-index:2;left:0;right:0;top:14.6cqw;margin:0;font-family:"Arial Black","Arial Bold",Gadget,Arial,sans-serif;font-size:19.6cqw;font-weight:900;line-height:1;letter-spacing:-.005em;text-align:center;white-space:nowrap;color:var(--text)}.hero-wordmark em{color:#5cb944}.hero-mascot{position:absolute;z-index:3;width:56.4%;left:16.1%;top:38.6%;aspect-ratio:1312/1199;filter:drop-shadow(0 12px 16px #345d1512);animation:mascot-float 8s ease-in-out infinite}.hero-mascot img{display:block;width:100%;height:auto}.hero-mascot canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.scene{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.17;pointer-events:none}.scene canvas{position:absolute;inset:0;width:100%;height:100%}.orbit{display:none}.hero-caption{display:flex;flex-direction:column;align-items:center;justify-self:center;gap:16px;text-align:center}
+.hero{position:relative;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:18px;height:100svh;min-height:600px;max-height:1100px;padding:96px 5% 36px;background:var(--hero-bg);overflow:hidden}.hero-art.hero-composition{position:relative;isolation:isolate;justify-self:center;width:min(100%,1400px);height:100%;min-height:0;container-type:size}.hero-canvas{position:absolute;left:0;right:0;bottom:0;margin:0 auto;width:min(100cqw,178cqh);aspect-ratio:1218/861;clip-path:inset(-50% -50% 0 -50%);container-type:inline-size}
+.network-map{position:absolute;z-index:0;left:42.4%;top:7.8%;width:57.1%;height:auto;opacity:.85}.hero h1.hero-wordmark{position:absolute;z-index:2;left:0;right:0;top:14.6cqw;margin:0;font-family:Sora,"Arial Black",Arial,sans-serif;font-size:21.6cqw;font-weight:700;line-height:1;letter-spacing:-.055em;text-align:center;white-space:nowrap;color:var(--text)}.hero-mascot{position:absolute;z-index:3;width:56.4%;left:16.1%;top:38.6%;aspect-ratio:1312/1199;filter:drop-shadow(0 12px 16px #345d1512);animation:mascot-float 8s ease-in-out infinite}.hero-mascot img{display:block;width:100%;height:auto}.hero-mascot canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.scene{position:absolute;inset:0;width:100%;height:100%;z-index:1;opacity:.17;pointer-events:none}.scene canvas{position:absolute;inset:0;width:100%;height:100%}.orbit{display:none}.hero-caption{display:flex;flex-direction:column;align-items:center;justify-self:center;gap:16px;text-align:center}
 .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.hero-caption .intro{margin:0;max-width:640px;font-size:20px;line-height:1.4;letter-spacing:-.01em;color:var(--text-2)}@keyframes mascot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 form label{display:block;font-size:11px;color:var(--text-3);margin-bottom:20px;padding-left:6px}input,textarea,select{display:block;width:100%;margin-top:8px;border:1px solid var(--border-strong);border-radius:8px;background:var(--elevated);color:var(--text);padding:12px 14px;font-size:14px;transition:background .2s,box-shadow .2s}
 input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,137,211,.12)}select option{background:var(--elevated)}textarea{resize:vertical}input::placeholder,textarea::placeholder{color:var(--text-4)}.form-status{font-size:13px;min-height:24px;color:var(--accent-text)}footer{padding:56px max(20px,5%) 28px;background:var(--bg);border-top:1px solid var(--border)}
@@ -427,8 +456,10 @@ html:has(.hero-cta.asking) .call-fab{opacity:0;visibility:hidden;pointer-events:
 .footer-address a{color:var(--text-3)}
 .footer-address a:hover{color:var(--text)}
 
-/* ApilageAI showcase on the home page. */
-.showcase{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);align-items:center;gap:36px;padding:48px;overflow:hidden;border-radius:16px;background:var(--surface)}
+/* ApilageAI showcase on the home page: the laptop stands in 3D, breaks out of the card's top-right corner,
+   leans toward the mouse (--tx/--ty from the tilt action) and has chips floating at different depths in front of it. */
+.showcase{--tx:0;--ty:0;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);align-items:center;gap:36px;margin-top:40px;padding:48px;border-radius:24px;background:var(--surface)}
+.showcase::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 78% 42%,rgba(227,38,47,.13),transparent 46%),radial-gradient(circle at 92% 92%,rgba(2,137,211,.10),transparent 38%);pointer-events:none}
 .showcase-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--elevated);color:var(--orange-deep);font-weight:600}
 .showcase h2{margin-top:14px;font-size:clamp(28px,3.2vw,44px)}
 .apilage-name{color:#e3262f;font-weight:700}
@@ -437,12 +468,29 @@ html:has(.hero-cta.asking) .call-fab{opacity:0;visibility:hidden;pointer-events:
 .showcase-points{display:grid;gap:12px;margin:26px 0 0;padding:0;list-style:none}
 .showcase-points li{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:500;color:var(--text-2)}
 .showcase-points .idea-icon{width:34px;height:34px}
-.showcase-visual{position:relative}
-.showcase-visual::before{content:"";position:absolute;inset:8% 10% 4%;z-index:0;border-radius:50%;background:radial-gradient(closest-side,rgba(227,38,47,.16),transparent);filter:blur(10px)}
-.showcase-visual img{position:relative;z-index:1;display:block;width:100%;height:auto;filter:drop-shadow(0 30px 40px rgba(0,0,0,.18));transition:transform .5s ease}
-.showcase:hover .showcase-visual img{transform:translateY(-6px) rotate(-.6deg)}
-@media(max-width:900px){.showcase{grid-template-columns:1fr;padding:32px 28px}}
-@media(max-width:600px){.showcase{padding:26px 20px}}
+.showcase-visual{position:relative;margin:-110px -80px -30px -10px;perspective:1600px;perspective-origin:40% 30%}
+.laptop-stage{position:relative;transform-style:preserve-3d;transform:rotateX(calc(9deg - var(--ty) * 12deg)) rotateY(calc(-18deg + var(--tx) * 16deg)) rotateZ(1.5deg);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.showcase:hover .laptop-stage{transition-duration:.25s}
+.showcase.reveal:not(.revealed) .laptop-stage{transform:rotateX(46deg) rotateY(-6deg) translateY(90px) scale(.86)}
+.laptop-stage img{position:relative;display:block;width:100%;height:auto;filter:drop-shadow(-24px 40px 34px rgba(0,0,0,.22)) drop-shadow(0 8px 10px rgba(0,0,0,.10))}
+/* A glossy streak that slides across the laptop as it tilts; the image itself is the mask so it never spills outside it. */
+.laptop-sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(112deg,transparent 38%,rgba(255,255,255,.42) 50%,transparent 62%) calc(50% + var(--tx) * 120%) 0/260% 100% no-repeat;-webkit-mask:url(/apilageai-laptop.webp) center/100% 100% no-repeat;mask:url(/apilageai-laptop.webp) center/100% 100% no-repeat;mix-blend-mode:soft-light;transition:background-position .25s}
+.laptop-floor{position:absolute;left:14%;right:6%;bottom:2%;height:16%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.28),transparent);filter:blur(14px);transform:translateX(calc(var(--tx) * -40px)) scaleX(calc(1 - var(--ty) * .12));transition:transform .25s}
+.laptop-chip{position:absolute;display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 9px;border:1px solid var(--border);border-radius:999px;background:var(--elevated);box-shadow:0 18px 40px -12px rgba(0,0,0,.28),0 2px 6px rgba(0,0,0,.06);font-size:14px;font-weight:600;white-space:nowrap;color:var(--text);animation:chip-bob 6s ease-in-out infinite}
+.laptop-chip .idea-icon{width:28px;height:28px}
+.chip-a{top:22%;left:2%;transform:translateZ(120px)}
+.chip-b{top:44%;right:-2%;transform:translateZ(80px);animation-delay:-2s}
+.chip-c{bottom:16%;left:22%;transform:translateZ(150px);animation-delay:-4s}
+@keyframes chip-bob{50%{translate:0 -10px}}
+.showcase.reveal .laptop-chip{opacity:0;transition:opacity .5s ease .7s}
+.showcase.reveal.revealed .laptop-chip{opacity:1}
+.showcase.reveal .chip-b{transition-delay:.85s}.showcase.reveal .chip-c{transition-delay:1s}
+:root[data-theme="dark"] .laptop-stage img{filter:drop-shadow(-24px 40px 34px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(227,38,47,.12))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .laptop-stage img{filter:drop-shadow(-24px 40px 34px rgba(0,0,0,.6)) drop-shadow(0 0 40px rgba(227,38,47,.12))}}
+@media(prefers-reduced-motion:reduce){.laptop-chip{animation:none}.showcase.reveal:not(.revealed) .laptop-stage{transform:rotateX(9deg) rotateY(-18deg) rotateZ(1.5deg)}}
+@media(max-width:1100px){.showcase-visual{margin:-60px -40px -20px 0}}
+@media(max-width:900px){.showcase{grid-template-columns:1fr;padding:32px 28px}.showcase-visual{margin:0 -12px -10px}.laptop-stage{transform:rotateX(calc(8deg - var(--ty) * 8deg)) rotateY(calc(-12deg + var(--tx) * 10deg))}}
+@media(max-width:600px){.showcase{padding:26px 20px}.laptop-chip{padding:6px 12px 6px 6px;font-size:12px;gap:7px}.laptop-chip .idea-icon{width:22px;height:22px}.chip-b{right:0}}
 :root:lang(si) .showcase h2{letter-spacing:0;line-height:1.3}
 
 /* Floating "Contact Now" call button. */
@@ -475,7 +523,7 @@ footer{padding-bottom:96px}
 /* The hero caption sits on its own layer (z-index 1), which would trap the docked input under later content such as
    the ApilageAI laptop image. While the input is open, lift the caption above everything except the navbar. */
 .hero>.hero-caption:has(.hero-cta.asking){z-index:30}
-@media(max-width:600px){.feature-grid>.feature-card{flex-basis:86%}.feature-rail-controls{display:none}}
+@media(max-width:600px){.feature-grid{scroll-padding-inline:4vw}.feature-grid>.feature-card{flex-basis:84vw}.rail-arrows{display:none}.rail-link{margin-left:0;font-size:16px}.feature-rail-controls{margin:-8px 0 20px}}
 
 /* Footer mascot sitting on the seam between the last section and the footer, with a torch in dark mode. */
 footer{position:relative}
@@ -510,3 +558,81 @@ footer{position:relative}
 .partner-logos li:hover{color:var(--brand)}
 @media(prefers-reduced-motion:reduce){.partner-marquee{-webkit-mask-image:none;mask-image:none}.partner-logos{flex-wrap:wrap;justify-content:center;flex-shrink:1;gap:18px 40px}.partner-logos[aria-hidden]{display:none}}
 @media(max-width:600px){.partners{padding-top:32px}.partner-logos{gap:16px 26px}.partner-logos li{font-size:16px}.partner-logos svg{width:22px;height:22px}}
+
+/* Hero wordmark: Sora with a soft top-to-bottom ink gradient, and a green "Ai" that a light streak sweeps across
+   once the hero has built in and then every few seconds. Falls back to flat colours where background-clip:text is missing. */
+.hero-wordmark em{color:#5cb944}
+@supports((-webkit-background-clip:text) or (background-clip:text)){
+ .hero h1.hero-wordmark{background:linear-gradient(180deg,var(--mark-top) 0%,var(--mark-bottom) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-bottom:.04em}
+ .hero-wordmark em{background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.7) 50%,transparent 58%) 160% 0/260% 100% no-repeat,linear-gradient(160deg,#a6e86f 0%,#5cb944 42%,#2e8a22 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+ .loaded .hero-wordmark em{animation:mark-shine 7s ease-in-out 1.4s infinite}
+}
+:root{--mark-top:#3a3a3a;--mark-bottom:#050505}
+:root[data-theme="dark"]{--mark-top:#ffffff;--mark-bottom:#a9a9a4}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--mark-top:#ffffff;--mark-bottom:#a9a9a4}}
+@keyframes mark-shine{0%{background-position:160% 0,0 0}22%,100%{background-position:-60% 0,0 0}}
+@media(prefers-reduced-motion:reduce){.loaded .hero-wordmark em{animation:none}}
+
+/* Hero backdrop: faint brand glows (green top-left, blue top-right, a soft lime pool behind the mascot) over a barely
+   green wash that fades to the plain page colour at the bottom, so the hero meets the partner strip without a seam. */
+:root{--hero-bg:radial-gradient(55% 48% at 10% 14%,rgba(92,185,68,.13),transparent 70%),radial-gradient(48% 44% at 90% 18%,rgba(2,137,211,.09),transparent 70%),radial-gradient(34% 30% at 50% 60%,rgba(166,232,111,.14),transparent 70%),linear-gradient(180deg,#f5faf2 0%,var(--bg) 92%)}
+:root[data-theme="dark"]{--hero-bg:radial-gradient(55% 48% at 10% 14%,rgba(92,185,68,.14),transparent 70%),radial-gradient(48% 44% at 90% 18%,rgba(2,137,211,.13),transparent 70%),radial-gradient(34% 30% at 50% 60%,rgba(127,207,94,.10),transparent 70%),linear-gradient(180deg,#1b2119 0%,var(--bg) 92%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--hero-bg:radial-gradient(55% 48% at 10% 14%,rgba(92,185,68,.14),transparent 70%),radial-gradient(48% 44% at 90% 18%,rgba(2,137,211,.13),transparent 70%),radial-gradient(34% 30% at 50% 60%,rgba(127,207,94,.10),transparent 70%),linear-gradient(180deg,#1b2119 0%,var(--bg) 92%)}}
+
+/* Floating AI platform logos in the hero background: glassy tiles that bob gently at different speeds and depths.
+   They sit above the mesh but below the wordmark and mascot, and are hidden on narrow or portrait screens, where there is no side margin. */
+.hero>.hero-logos{position:absolute;inset:0;z-index:0;pointer-events:none}
+.float-logo{position:absolute;left:var(--x);top:var(--y);display:grid;place-items:center;width:calc(var(--size) * var(--depth));aspect-ratio:1;border-radius:30%;border:1px solid var(--nav-border);background:var(--logo-tile);box-shadow:0 14px 30px -10px var(--nav-shadow-scrolled),inset 0 1px 0 var(--nav-highlight);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--brand);opacity:calc(.35 + var(--depth) * .6);filter:blur(calc((1 - var(--depth)) * 3px));translate:-50% -50%;animation:logo-float calc(7s + var(--i) * .6s) ease-in-out var(--delay) infinite}
+.float-logo svg{width:52%;height:52%}
+.float-emoji{font-size:calc(var(--size) * var(--depth) * .56);line-height:1;color:var(--text)}
+.float-pill{width:auto;aspect-ratio:auto;height:calc(var(--size) * var(--depth));padding:0 18px 0 14px;gap:8px;border-radius:999px;font-family:"Noto Sans Sinhala","Sinhala Sangam MN","Iskoola Pota",Inter,sans-serif;font-size:17px;font-weight:600;white-space:nowrap;letter-spacing:0;display:flex}
+.float-pill .float-glyph{font-size:26px}
+@keyframes logo-float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-16px) rotate(4deg)}}
+:root{--logo-tile:rgba(255,255,255,.72)}
+:root[data-theme="dark"]{--logo-tile:rgba(40,40,40,.62)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--logo-tile:rgba(40,40,40,.62)}}
+.preloading .hero-logos{opacity:0}
+.loaded .hero-logos{animation:fade-in 1.4s ease .6s both}
+@media(prefers-reduced-motion:reduce){.float-logo{animation:none}}
+@media(max-width:1100px){.float-logo{width:calc(var(--size) * var(--depth) * .8)}}
+@media(max-width:1024px),(max-aspect-ratio:1/1){.hero>.hero-logos{display:none}}
+
+/* "I don't know how?" advisor: while Claude thinks, the send button pulses; the suggestions card docks just above the
+   input with the package, matching services and AI ideas, and scrolls inside itself on short screens. */
+.ask-box.thinking .ask-send{pointer-events:none;animation:ask-think 1s ease-in-out infinite}
+@keyframes ask-think{50%{transform:scale(.86);opacity:.55}}
+.advice-card{position:fixed;left:50%;bottom:92px;z-index:25;width:min(600px,calc(100% - 32px));max-height:calc(100svh - 190px);overflow-y:auto;overscroll-behavior:contain;padding:18px 18px 16px;border:1px solid var(--border);border-radius:24px;background:var(--elevated);box-shadow:0 24px 60px rgba(0,0,0,.2);text-align:left;transform:translateX(-50%);animation:advice-in .45s cubic-bezier(.2,.8,.25,1) both}
+@keyframes advice-in{from{opacity:0;transform:translate(-50%,14px) scale(.98)}}
+.advice-reply{margin:0 0 14px;font-size:15.5px;line-height:1.5;font-weight:500;color:var(--text)}
+.advice-kicker{display:flex;align-items:center;gap:7px;margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--accent-text)}
+.advice-package{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(110deg,var(--green-soft),var(--blue-soft));color:var(--text);transition:transform .2s}
+.advice-package:hover{transform:translateY(-1px)}
+.advice-package>span{display:grid;gap:2px}
+.advice-package small{font-size:12px;font-weight:600;color:var(--green-soft-text)}
+.advice-package strong{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.advice-package>span>span{font-size:13.5px;color:var(--text-3)}
+.advice-label{margin:16px 0 8px;font-size:12.5px;font-weight:600;color:var(--text-3)}
+.advice-services,.advice-ideas{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.advice-services a{display:grid;gap:2px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;transition:background .15s,border-color .15s}
+.advice-services a:hover{background:var(--surface);border-color:var(--border-strong)}
+.advice-services strong{font-size:14.5px;font-weight:600;color:var(--text)}
+.advice-services span{font-size:13px;line-height:1.45;color:var(--text-3)}
+.advice-ideas li{display:flex;align-items:flex-start;gap:8px;font-size:14px;line-height:1.45;color:var(--text-2)}
+.advice-ideas svg{flex-shrink:0;margin-top:2px;color:var(--orange-deep)}
+.advice-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.advice-actions .button{padding-block:10px;font-size:14.5px}
+@media(max-width:600px){.advice-card{bottom:80px;padding:14px 14px 12px;border-radius:20px}.advice-package strong{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.ask-box.thinking .ask-send,.advice-card{animation:none}}
+/* Hero on a solid green that matches the mascot's face, in both themes. The hero keeps light-theme text
+   and button colours so it stays readable on the green, and the green "Ai" turns white so it doesn't disappear. */
+:root,:root[data-theme="dark"]{--hero-bg:#86cf1e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--hero-bg:#86cf1e}}
+.hero{--text:#111;--text-2:rgba(0,0,0,.82);--mark-top:#1c1c1c;--mark-bottom:#000;--btn-bg:#111;--btn-text:#fff;--btn-hover:#2a2a2a;--chip:rgba(255,255,255,.78);--chip-hover:#fff;--elevated:#fff;--border:rgba(0,0,0,.08);--logo-tile:rgba(255,255,255,.8);--nav-border:rgba(255,255,255,.6);color:#111}
+.hero h1.hero-wordmark em{background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.9) 50%,transparent 58%) 160% 0/260% 100% no-repeat,linear-gradient(160deg,#ffffff 0%,#f4ffe6 55%,#dff5c4 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .network-map,:root[data-theme="dark"] .hero .network-map{filter:none;mix-blend-mode:multiply;opacity:.55}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero .network-map{filter:none}}
+.hero .hero-mesh{opacity:.5;mix-blend-mode:multiply}
+/* The green hero fades into the page across the partner-logo strip instead of ending in a hard line.
+   The fade is a full-width layer behind the (centred, max-width) strip. */
+.partners{position:relative;isolation:isolate}
+.partners::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:calc(50% - 50vw);right:calc(50% - 50vw);background:linear-gradient(180deg,var(--hero-bg) 0%,color-mix(in srgb,var(--hero-bg) 45%,var(--bg)) 38%,var(--bg) 100%);pointer-events:none}
